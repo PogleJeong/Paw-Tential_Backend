@@ -19,5 +19,25 @@ public List <FollowDto> getAllFollowId(String id){
   return session.selectList(ns + "getAllFollowId",id);
 }
 
+  public List <FollowDto> getAllToUsers(String toUser){
+    return session.selectList(ns + "getAllToUsers", toUser);
+  }
 
+  public void addFollowToUser(FollowDto followDto) {
+    session.insert(ns + "addFollowToUser", followDto);
+  }
+
+  @Override
+  public void update(FollowDto followDto) {
+    //session.update(ns + "updateFollow", followDto); // xml 추가해주세요
+  }
+
+  @Override
+  public void delete(Integer seq) {
+    //session.delete(ns + "deleteFollow", seq); // xml 추가해주세요
+  }
+
+  public FollowDto getBySeq(Integer seq) {
+    return session.selectOne(ns + "getBySeq", seq);
+  }
 }

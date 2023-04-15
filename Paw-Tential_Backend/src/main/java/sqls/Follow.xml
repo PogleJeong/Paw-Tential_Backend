@@ -9,11 +9,28 @@
     from follow
   </select>
 
+  <select id="getAllToUsers"  parameterType="String" resultType="mul.cam.a.follow.dto.FollowDto">
+    select *
+    from follow
+    where toUser = #{toUser}
+  </select>
+
+  <select id="getBySeq"  parameterType="Inteager" resultType="mul.cam.a.follow.dto.FollowDto">
+    select *
+    from follow
+    where seq = #{seq}
+  </select>
+
   <!-- follow한것만 불러오기? -->
 <!--<select id="selectOneWish" parameterType="mul.cam.a.follow.dto.FollowDto" resultType="mul.cam.a.follow.dto.FollowDto">-->
 <!--  select *-->
 <!--from wish-->
 <!--where id = #{id} and follow_id = #{follow_id} and fromUser = #{fromUser} and toUser = #{toUser}-->
 <!--</select>-->
+
+  <insert id="addFollowToUser" parameterType="mul.cam.a.follow.dto.FollowDto">
+    insert into follow(fromUser, toUser)
+      value(#{fromUser}, #{toUser})
+  </insert>
 
 </mapper>

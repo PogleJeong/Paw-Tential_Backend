@@ -16,4 +16,27 @@ public class FollowServiceImpl implements  FollowService{
   public List<FollowDto> getAllFollowId(String id) {
     return dao.getAllFollowId(id);
   }
+
+  @Override
+  public List<FollowDto> getAllToUsers(String userId) {
+    return dao.getAllToUsers(userId);
+  }
+
+  @Override
+  public void addFollowToUser(FollowDto followDto) {
+    dao.addFollowToUser(followDto);
+  }
+
+  @Override
+  public void updateFollow(Integer seq, FollowDto followDto) {
+    FollowDto follow = dao.getBySeq(seq);
+    if (follow != null) {
+      dao.update(followDto);
+    }
+  }
+
+  @Override
+  public void deleteFollow(Integer seq) {
+    dao.delete(seq);
+  }
 }
