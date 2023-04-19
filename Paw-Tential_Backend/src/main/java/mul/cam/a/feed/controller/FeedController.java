@@ -14,15 +14,20 @@ import java.util.List;
 public class FeedController {
 
   @Autowired
-  FeedService feedService;
+  FeedService service;
 
   //모든피드 불러오기
   @GetMapping("/mainFeed")
   public List<FeedDto> mainFeed(){
     System.out.println("mainFeed baseLayout" + new Date());
-    List<FeedDto> feed = feedService.feed();
+    List<FeedDto> feed = service.feed();
     return feed;
   }
-  //로그인했을때,팔로우한 피드까지 불러오기
+  //로그인후,팔로우한 피드까지 불러오기
+@GetMapping("/{id}/mainFeed")
+  public List<FeedDto> getFollowToUsersFeed(@PathVariable String id){
+    System.out.println("getFollowToUsersFeed baseLayout" + new Date());
+  return service.getFollowToUsersFeed(id);
 
+}
 }

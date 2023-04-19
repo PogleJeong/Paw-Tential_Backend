@@ -4,9 +4,16 @@
 
 <mapper namespace="Comment">
 <!-- comment불러오기 -->
-  <select id="getAllComment" resultType="mul.cam.a.comment.dto.CommentDto">
+  <select id="getAllComment" parameterType="int" resultType="mul.cam.a.comment.dto.CommentDto">
     select *
     from comment
   </select>
+
+  <!-- comment저장 -->
+<insert id="addComment" parameterType="mul.cam.a.comment.dto.CommentDto">
+   insert into  comment(seq, feed_seq, id, comment, date_created, date_updated)
+    values  (#{seq},#{feed_seq},#{id},#{comment},#{date_created},#{date_updated} )
+</insert>
+
 
 </mapper>

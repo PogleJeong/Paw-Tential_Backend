@@ -13,8 +13,19 @@ public class CommentDaoImpl implements CommentDao{
 @Autowired
 SqlSession session;
 
+  String ns = "Comment.";
+
+
   @Override
-  public List<CommentDto> comment() {
-    return session.selectList("Comment.getAllComment");
+  public List<CommentDto> getAllComment(int seq) {
+    return session.selectList(ns + "getAllComment",seq);
   }
+
+  //댓글저장
+  @Override
+  public void addComment(CommentDto commentDto) {
+    session.insert(ns + "addComment", commentDto);
+  }
+
+
 }

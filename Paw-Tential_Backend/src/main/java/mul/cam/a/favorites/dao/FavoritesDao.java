@@ -8,4 +8,7 @@ import java.util.List;
 
 public interface FavoritesDao {
   List<FavoritesDto> favorites();
+
+  //댓글저장하기
+  void addFavorites(FavoritesDto favoritesDto);
 }
