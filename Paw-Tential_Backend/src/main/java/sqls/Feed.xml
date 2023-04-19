@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Feed">
+<!-- main feed불러오기 -->
+  <select id="getAllFeed" resultType="mul.cam.a.feed.dto.FeedDto">
+    select *
+    from feed
+  </select>
+
+</mapper>
