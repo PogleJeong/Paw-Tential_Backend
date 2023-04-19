@@ -14,6 +14,12 @@ public class FavoritesDaoimpl implements FavoritesDao{
   SqlSession session;
   @Override
   public List<FavoritesDto> favorites() {
+
     return session.selectList("Favorites.getAllFavorites");
+  }
+
+  @Override
+  public void addFavorites(FavoritesDto favoritesDto) {
+    session.insert("Favorites.addFavorites");
   }
 }
