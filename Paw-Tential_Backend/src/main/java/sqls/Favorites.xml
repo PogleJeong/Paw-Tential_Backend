@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Favorites">
+<!-- Favorites불러오기 -->
+  <select id="getAllFavorites" resultType="mul.cam.a.favorites.dto.FavoritesDto">
+    select *
+    from favorites
+  </select>
+
+  <!-- Favorites저장 -->
+  <insert id="addFavorites" parameterType="mul.cam.a.favorites.dto.FavoritesDto">
+    insert into  favorites(seq, feed_seq, id)
+    VALUES (#{seq},#{feed_seq},#{id})
+  </insert>
+
+</mapper>

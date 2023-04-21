@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="mul.cam.a.group.dao.GroupDAO">
+
+<!-- 가입한 그룹의 존재 여부 -->
+<select id="hasJoinedGroup" parameterType="String" resultType="Integer">
+SELECT COUNT(*)
+FROM MEMBER_GROUP
+WHERE MEMBER_ID = #{memberId} AND STATUS = 1;
+</select>
+
+<!-- 특정 그룹의 피드 가져오기 -->
+<select id="getGroupFeed" parameterType="Integer" resultType="mul.cam.a.group.dto.GroupFeedDTO">
+SELECT F.GRP_FEED_NO, F.GRP_FEED_CONTENT, F.GRP_FEED_WD, F.GRP_FEED_SETTING, F.GRP_FEED_ID, COUNT(L.GRP_FEED_NO) AS GRP_FEED_LIKE_COUNT
+FROM GRP_FEED F
+LEFT JOIN GRP_FEED_LIKE L ON F.GRP_FEED_NO = L.GRP_FEED_NO
+WHERE F.GRP_NO = ${grpNo}
+GROUP BY F.GRP_FEED_NO, F.GRP_FEED_CONTENT, F.GRP_FEED_WD, F.GRP_FEED_SETTING, F.GRP_FEED_ID
+</select>
+
+<!-- 특정 회원이 가입한 그룹의 피드를 최신순으로 가져오기 -->
+<select id="getMemberGroupsFeeds" parameterType="String" resultType="mul.cam.a.group.dto.GroupFeedDTO">
+SELECT *
+FROM GRP_FEED
+WHERE GRP_NO IN (SELECT GROUP_ID 
+									FROM MEMBER_GROUP
+									WHERE MEMBER_ID = #{memberId})
+ORDER BY GRP_FEED_WD DESC;
+</select>
+
+<!-- 그룹 생성 -->
+<insert id="createGroup" useGeneratedKeys="true" keyProperty="grpNo" parameterType="mul.cam.a.group.dto.GroupDTO">
+INSERT INTO GRP(GRP_NAME, GRP_LEADER, GRP_IMAGE, GRP_INTRO)
+VALUES(#{grpName}, #{grpLeader}, #{grpImage}, #{grpIntro})
+</insert>
+
+<!-- 그룹 생성 시, MEMBER_GROUP 테이블에도 데이터 추가 -->
+<insert id="addMemberGroup" parameterType="mul.cam.a.group.dto.MemberGroupDTO">
+INSERT INTO MEMBER_GROUP
+VALUES(#{memberId}, ${groupId}, #{groupName}, 1);
+</insert>
+
+<!-- 그룹 검색 -->
+<select id="searchGroup" parameterType="mul.cam.a.group.dto.MemberGroupDTO" resultType="mul.cam.a.group.dto.GroupDTO">
+SELECT G.GRP_NO, G.GRP_NAME, G.GRP_IMAGE, G.GRP_MEMBER, G.GRP_VISIT, (SELECT STATUS
+																																					FROM MEMBER_GROUP
+																																					WHERE MEMBER_ID = #{memberId}
+																																					AND GROUP_ID = G.GRP_NO) AS GRP_STATUS, COUNT(F.GRP_NO) AS GRP_POST
+FROM GRP G
+LEFT OUTER JOIN MEMBER_GROUP M ON G.GRP_NO = M.GROUP_ID
+LEFT OUTER JOIN GRP_FEED F ON G.GRP_NO = F.GRP_NO
+WHERE LOWER(GRP_NAME) LIKE CONCAT ('%', LOWER(#{groupName}), '%')
+GROUP BY G.GRP_NO, G.GRP_NAME, G.GRP_IMAGE, G.GRP_MEMBER, G.GRP_VISIT
+</select>
+
+<!-- 방문수 증가 -->
+<update id="addVisit" parameterType="Integer">
+UPDATE GRP
+SET GRP_VISIT = GRP_VISIT + 1
+WHERE GRP_NO = ${grpNo}
+</update>
+
+<!-- 그룹 가입 요청 -->
+<insert id="groupJoinRequest" parameterType="mul.cam.a.group.dto.MemberGroupDTO">
+INSERT INTO MEMBER_GROUP
+VALUES(#{memberId}, ${groupId}, #{groupName}, 2);
+</insert>
+
+<!-- 그룹 가입 요청 취소 -->
+<delete id="groupJoinCancel" parameterType="mul.cam.a.group.dto.MemberGroupDTO">
+DELETE FROM MEMBER_GROUP
+WHERE MEMBER_ID = #{memberId} AND GROUP_ID = #{groupId}
+</delete>
+
+<!-- 내가 가입한 그룹 목록 가져오기 -->
+<select id="getMyGroupList" parameterType="String" resultType="mul.cam.a.group.dto.GroupDTO">
+SELECT DISTINCT G.GRP_NO, G.GRP_NAME, G.GRP_LEADER, G.GRP_IMAGE
+FROM GRP G, MEMBER_GROUP MG
+WHERE 1=1
+AND G.GRP_NO = MG.GROUP_ID
+AND G.GRP_NO IN (SELECT GROUP_ID
+									FROM MEMBER_GROUP
+									WHERE MEMBER_ID = #{memberId} AND STATUS = 1)
+</select>
+
+<!-- 특정 그룹의 정보 가져오기 -->
+<select id="getGroupInfo" parameterType="Integer" resultType="mul.cam.a.group.dto.GroupDTO">
+SELECT *
+FROM GRP
+WHERE GRP_NO = ${grpNo}
+</select>
+
+<!-- 특정 그룹의 리더 -->
+<select id="getGroupLeader" parameterType="Integer" resultType="String">
+SELECT GRP_LEADER
+FROM GRP
+WHERE GRP_NO = ${grpNo}
+</select>
+
+<!-- 특정 그룹에 가입한 인원 가져오기 -->
+<select id="getGroupJoinRequest" parameterType="Integer" resultType="mul.cam.a.group.dto.MemberGroupDTO">
+SELECT MEMBER_ID
+FROM MEMBER_GROUP
+WHERE GROUP_ID = ${groupId} AND STATUS = 2
+</select>
+
+<!-- 그룹 가입 승인 -->
+<update id="acceptJoinRequest" parameterType="mul.cam.a.group.dto.MemberGroupDTO">
+UPDATE MEMBER_GROUP
+SET STATUS = 1
+WHERE GROUP_ID = ${groupId} AND MEMBER_ID = #{memberId}
+</update>
+
+<update id="addMember" parameterType="Integer">
+UPDATE GRP
+SET GRP_MEMBER = GRP_MEMBER + 1
+WHERE GRP_NO = ${grpNo}
+</update>
+
+<!-- 그룹 수정하기 -->
+<update id="modifyGroup" parameterType="mul.cam.a.group.dto.GroupDTO">
+UPDATE GRP
+SET GRP_NAME = #{grpName}, GRP_INTRO = #{grpIntro}, GRP_IMAGE = #{grpImage}
+WHERE GRP_NO = ${grpNo}
+</update>
+
+<!-- 그룹 탈퇴하기 -->
+<delete id="leaveGroup" parameterType="mul.cam.a.group.dto.MemberGroupDTO">
+DELETE
+FROM MEMBER_GROUP
+WHERE MEMBER_ID = #{memberId} AND GROUP_ID =#{groupId}
+</delete>
+
+<update id="removeMember" parameterType="Integer">
+UPDATE GRP
+SET GRP_MEMBER = GRP_MEMBER - 1
+WHERE GRP_NO = ${grpNo}
+</update>
+
+<!-- 그룹 삭제하기 -->
+<delete id="deleteGroup" parameterType="Integer">
+DELETE
+FROM GRP
+WHERE GRP_NO = ${grpNo}
+</delete>
+
+<!-- 특정 그룹에 피드 작성하기 -->
+<insert id="createFeed" parameterType="mul.cam.a.group.dto.GroupFeedDTO">
+INSERT INTO GRP_FEED(GRP_NO, GRP_FEED_CONTENT, GRP_FEED_SETTING, GRP_FEED_ID)
+VALUES(${grpNo}, #{grpFeedContent}, #{grpFeedSetting}, #{grpFeedId})
+</insert>
+
+<!-- 피드 수정하기 -->
+<update id="feedModify" parameterType="mul.cam.a.group.dto.GroupFeedDTO">
+UPDATE GRP_FEED
+SET GRP_FEED_CONTENT = #{grpFeedContent}, GRP_FEED_SETTING = #{grpFeedSetting}
+WHERE GRP_FEED_NO = ${grpFeedNo}
+</update>
+
+<!--  특정 피드 정보 불러오기 -->
+<select id="loadPost" parameterType="Integer" resultType="mul.cam.a.group.dto.GroupFeedDTO">
+SELECT *
+FROM GRP_FEED
+WHERE GRP_FEED_NO = ${grpFeedNo}
+</select>
+
+<!-- 피드 삭제하기 -->
+<delete id="feedDelete" parameterType="Integer">
+DELETE
+FROM GRP_FEED
+WHERE GRP_FEED_NO = ${grpFeedNo}
+</delete>
+
+<!-- 특정 그룹의 멤버수 구하기 -->
+<select id="getGroupMemberCount" parameterType="Integer" resultType="Integer">
+SELECT COUNT(*)
+FROM MEMBER_GROUP
+WHERE GROUP_ID = ${groupId}
+</select>
+
+<!-- 특정 피드 좋아요 처리 -->
+<insert id="groupFeedLike" parameterType="mul.cam.a.group.dto.GroupFeedLikeDTO">
+INSERT INTO GRP_FEED_LIKE
+VALUES(${grpFeedNo}, #{grpFeedLikeId})
+</insert>
+
+<!-- 특정 피드 좋아요 취소 처리 -->
+<delete id="groupFeedUnLike" parameterType="mul.cam.a.group.dto.GroupFeedLikeDTO">
+DELETE
+FROM GRP_FEED_LIKE
+WHERE GRP_FEED_NO = ${grpFeedNo} AND GRP_FEED_LIKE_ID = #{grpFeedLikeId}
+</delete>
+
+<!-- 기존에 좋아요 클릭한 이력이 있는지 조사 -->
+<select id="hasLikedGroupFeed" parameterType="mul.cam.a.group.dto.GroupFeedLikeDTO" resultType="Integer">
+SELECT COUNT(*)
+FROM GRP_FEED_LIKE
+WHERE GRP_FEED_NO = ${grpFeedNo} AND GRP_FEED_LIKE_ID = #{grpFeedLikeId}
+</select>
+
+<!-- 댓글 리스트 가져오기 -->
+<select id="getCommentList" parameterType="Integer" resultType="mul.cam.a.group.dto.GroupFeedCommentDTO">
+SELECT *
+FROM GRP_COMMENT
+WHERE GRP_FEED_NO = ${grpFeedNo}
+</select>
+
+<!-- 댓글 작성하기 -->
+<insert id="writeGrpFeedCmt" parameterType="mul.cam.a.group.dto.GroupFeedCommentDTO">
+INSERT INTO GRP_COMMENT(GRP_FEED_NO,  GRP_FEED_CMT_ID, GRP_FEED_CMT_REF, GRP_FEED_CMT_CONTENT)
+VALUES(${grpFeedNo},
+				#{grpFeedCmtId},
+				(SELECT IFNULL(MAX(GRP_FEED_CMT_REF), 0) +1 FROM GRP_COMMENT GC),
+				#{grpFeedCmtContent}
+				)
+</insert>
+
+<!-- 댓글 삭제하기 -->
+<delete id="cmtDelete" parameterType="Integer">
+DELETE 
+FROM GRP_COMMENT
+WHERE GRP_CMT_NO = ${grpCmtNo}
+</delete>
+
+<!-- 댓글수 카운트 -->
+<select id="countComment" parameterType="Integer" resultType="Integer">
+SELECT COUNT(*)
+FROM GRP_COMMENT
+WHERE GRP_FEED_NO = ${grpFeedNo}
+</select>
+
+</mapper>

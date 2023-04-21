@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.0.5</version>
-		<relativePath/>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>mulcampus.final.team.5</groupId>
 	<artifactId>Paw-Tential_Backend</artifactId>
@@ -22,11 +22,22 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-devtools</artifactId>
+		<scope>runtime</scope>
+		<optional>true</optional>
+	</dependency>
+		
+		
 		
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
@@ -78,6 +89,7 @@
 		    <artifactId>mysql-connector-java</artifactId>
 		    <version>8.0.29</version>
 		</dependency>
+
 		<dependency>
 		  <groupId>com.google.code.gson</groupId>
 		  <artifactId>gson</artifactId>
@@ -104,8 +116,28 @@
 		    <artifactId>spring-security-config</artifactId>
 		    <version>3.2.0.RELEASE</version>
 		</dependency>
-
-		
+    
+		<dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.11.0</version>
+    </dependency>
+	
+    <!--lombok-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.26</version>
+			<scope>provided</scope>
+		</dependency>
+    
+		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -115,6 +147,25 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<!-- src/main/java 폴더의 xml파일들을 빌드에 포함 -->
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<!-- src/main/resources 폴더의 xml, properties, yml, setting파일들을 빌드에 포함 -->
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+					<include>**/*.yml</include>
+					<!-- <include>**/*.setting</include>-->
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 </project>
