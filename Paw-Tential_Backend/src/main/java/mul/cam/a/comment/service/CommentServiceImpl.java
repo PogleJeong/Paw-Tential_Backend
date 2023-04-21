@@ -13,8 +13,14 @@ public class CommentServiceImpl implements CommentService{
   @Autowired
   CommentDao dao;
 
+ //댓글불러오기
   @Override
-  public List<CommentDto> comment() {
-    return dao.comment();
+  public List<CommentDto> getAllComment(int seq) {
+    return dao.getAllComment(seq);
+  }
+//댓글저장
+  @Override
+  public void addComment(CommentDto commentDto) {
+    dao.addComment(commentDto);
   }
 }

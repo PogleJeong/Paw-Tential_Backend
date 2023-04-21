@@ -15,6 +15,13 @@ public class FavoritesServiceImpl implements FavoritesService{
 
   @Override
   public List<FavoritesDto> favorites() {
+
     return dao.favorites();
+  }
+
+  @Override
+  public void addFavorites(FavoritesDto favoritesDto) {
+    dao.addFavorites(favoritesDto);
+
   }
 }

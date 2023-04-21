@@ -12,11 +12,12 @@ public class FollowServiceImpl implements  FollowService{
 
   @Autowired
   FollowDao dao;
+/*
   @Override
   public List<FollowDto> getAllFollowId(String id) {
     return dao.getAllFollowId(id);
   }
-
+*/
   @Override
   public List<FollowDto> getAllToUsers(String userId) {
     return dao.getAllToUsers(userId);

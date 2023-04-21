@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FollowDao {
 
-  List<FollowDto> getAllFollowId(String id);
+  // List<FollowDto> getAllFollowId(String id);
 
   List<FollowDto> getAllToUsers(String id);
 
