@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>mulcampus.final.team.5</groupId>
-	<artifactId>Paw-Tental_Backend</artifactId>
+	<artifactId>Paw-Tential_Backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Paw-Tential_Backend</name>
 	<description>Team project for Spring Boot</description>
@@ -27,6 +27,15 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-devtools</artifactId>
+		<scope>runtime</scope>
+		<optional>true</optional>
+	</dependency>
+		
+		
 		
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
@@ -78,6 +87,12 @@
 		    <artifactId>mysql-connector-java</artifactId>
 		    <version>8.0.29</version>
 		</dependency>
+		
+		<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.11.0</version>
+</dependency>
 		
 	</dependencies>
 
