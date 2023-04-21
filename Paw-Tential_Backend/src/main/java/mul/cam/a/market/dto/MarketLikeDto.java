@@ -1,13 +1,13 @@
-package mul.cam.a.dto;
+package mul.cam.a.market.dto;
 
-public class MarketMarkDto {
+public class MarketLikeDto {
 	private int posting;
 	private String id;
 	
-	public MarketMarkDto() {
+	public MarketLikeDto() {
 	}
 	
-	public MarketMarkDto(int posting, String id) {
+	public MarketLikeDto(int posting, String id) {
 		super();
 		this.posting = posting;
 		this.id = id;

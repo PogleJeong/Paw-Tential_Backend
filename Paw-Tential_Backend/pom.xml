@@ -78,6 +78,33 @@
 		    <artifactId>mysql-connector-java</artifactId>
 		    <version>8.0.29</version>
 		</dependency>
+		<dependency>
+		  <groupId>com.google.code.gson</groupId>
+		  <artifactId>gson</artifactId>
+		  <version>2.8.7</version>
+		</dependency>
+			
+		<!-- 이메일 인증기능 -->
+	    <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+	    <dependency>
+	        <groupId>javax.mail</groupId>
+	        <artifactId>mail</artifactId>
+	        <version>1.4.7</version>
+	    </dependency>
+	    
+	    <!-- bycrypt 비밀번호 복호화-->
+	    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
+		 <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-security</artifactId>
+		    <version>3.0.5</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-config</artifactId>
+		    <version>3.2.0.RELEASE</version>
+		</dependency>
+
 		
 	</dependencies>
 

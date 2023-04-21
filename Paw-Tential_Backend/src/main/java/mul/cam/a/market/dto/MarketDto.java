@@ -1,4 +1,4 @@
-package mul.cam.a.dto;
+package mul.cam.a.market.dto;
 
 import java.util.Date;
 
