@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.pet.dao.PetDao">
+	<insert id="petRegister" parameterType="mul.cam.a.pet.dto.PetDto">
+		insert into Pet(id, cate, img, name, birth, intro, gender)
+		values(#{id}, #{cate}, #{img}, #{name}, #{birth}, #{intro}, #{gender})
+	</insert>
+</mapper>
