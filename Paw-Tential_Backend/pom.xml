@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.3</version>
+		<version>3.0.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>mulcampus.final.team.5</groupId>
@@ -89,6 +89,25 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<!-- src/main/java 폴더의 xml파일들을 빌드에 포함 -->
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<!-- src/main/resources 폴더의 xml, properties, yml, setting파일들을 빌드에 포함 -->
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+					<include>**/*.yml</include>
+					<!-- <include>**/*.setting</include>-->
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 </project>
