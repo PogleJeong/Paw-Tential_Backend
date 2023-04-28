@@ -19,7 +19,14 @@ public class FavoritesDaoimpl implements FavoritesDao{
   }
 
   @Override
-  public void addFavorites(FavoritesDto favoritesDto) {
-    session.insert("Favorites.addFavorites");
+
+  public int addFavorites(FavoritesDto favoritesDto) {
+    return session.insert("Favorites.addFavorites",  favoritesDto);
   }
+
+  @Override
+  public void deleteFavorites(Integer seq) {
+    session.delete("Favorites.deleteFavorites", seq);
+  }
+
 }

@@ -10,9 +10,30 @@
   </select>
 
   <!-- Favorites저장 -->
+
+  <insert id="addFavorites" parameterType="mul.cam.a.favorites.dto.FavoritesDto" useGeneratedKeys="true" keyProperty="seq">
+    insert into  favorites(feed_seq, id ,feed_like)
+    VALUES (#{feed_seq},#{id}, #{feed_like})
+  </insert>
+
+  <!-- Favorites -->
+
+
+<!-- Favorites취소 -->
+  <delete id="deleteFavorites" parameterType="mul.cam.a.favorites.dto.FavoritesDto">
+    delete
+    from Favorites
+    where seq = #{seq}
+  </delete>
+
+
+
+
+
   <insert id="addFavorites" parameterType="mul.cam.a.favorites.dto.FavoritesDto">
     insert into  favorites(seq, feed_seq, id)
     VALUES (#{seq},#{feed_seq},#{id})
   </insert>
+
 
 </mapper>

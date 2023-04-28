@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface FeedService {
   List<FeedDto> feed();
+  List<FeedDto> getAllFeedByUserId(String userId);
   /*
  void getFollowToUsersFeed(String toUser);
  void getFollowToUsersFeed(String toUser, FollowDto followdto);
