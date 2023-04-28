@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.member.dao.MemberDao">
+
+	<select id="idCheck" parameterType="String" resultType="Integer">
+		select count(*)
+		from member
+		where id=#{id}
+	</select>
+	
+	<select id="nicknameCheck" parameterType="String" resultType="Integer">
+		select count(*)
+		from member
+		where nickname=#{nickname}
+	</select>
+	
+	<select id="login" parameterType="mul.cam.a.member.dto.MemberDto" resultType="mul.cam.a.member.dto.MemberDto">
+		select id, pwd, nickname
+		from member
+		where id=#{id}
+	</select>
+
+	<insert id="addMember" parameterType="mul.cam.a.member.dto.MemberDto">
+		insert into Member(id, pwd, email, nickname, phone, birth, gender, profile, intro, petHave, status, regiDate, groupId, groupStatus, auth)
+		values(#{id}, #{pwd}, #{email}, #{nickname}, #{phone}, #{birth}, #{gender}, "baseprofile", "안녕하세요!", 0, 0, now(), "", 0, 0)
+	</insert>
+	
+	<select id="findId" parameterType="hashmap" resultType="String">
+		select id
+		from member
+		where email=#{email} and phone=#{phone}
+	</select>
+	
+	<update id="resetPassword" parameterType="mul.cam.a.member.dto.MemberDto">
+		update Member
+		set password=#{password}
+		where id=#{id} and email=#{email}
+	</update>
+	
+	<select id="idAndEmailCheck" parameterType="hashmap" resultType="mul.cam.a.member.dto.MemberDto">
+		select *
+		from Member
+		where id=#{id} and email=#{email}
+	</select>
+	
+	<select id="checkExistEmailAuth" parameterType="mul.cam.a.member.dto.AuthenticationDto" resultType="Integer">
+		select count(*)
+		from email_auth
+		where id=#{id} and email=#{email}
+	</select>
+	
+	<insert id="addEmailAuth" parameterType="mul.cam.a.member.dto.AuthenticationDto">
+		insert into email_auth(id, email, authKey, sendDate)
+		values(#{id}, #{email}, #{authKey}, now())
+	</insert>
+	
+	<update id="updateEmailAuth" parameterType="mul.cam.a.member.dto.AuthenticationDto">
+		update email_auth
+		set authKey=#{authKey}, sendDate=now()
+		where id=#{id} and email=#{email}
+	</update>
+	
+	<select id="confirmAuthKey" parameterType="mul.cam.a.member.dto.AuthenticationDto" resultType="Integer">
+		select count(*)
+		from email_auth
+		where id=#{id} and email=#{email} and authKey=#{authKey}
+	</select>
+	
+	<delete id="deleteAuthKeyAfterConfirm" parameterType="mul.cam.a.member.dto.AuthenticationDto">
+		delete from email_auth
+		where id=#{id} and email=#{email} and authKey=#{authKey}
+	</delete>
+
+</mapper>
