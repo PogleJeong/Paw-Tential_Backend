@@ -6,202 +6,192 @@ public class MarketDto {
 	private String title;
 	private String content;
 	private Date wdate;
-	private String statement;
 	private String id;
-	private String product;
+	private String state;
 	private String category;
-	private int number;
-	private String condition;
-	private String view;
+	private String productName;
+	private int productNumber;
+	private String conditions;
 	private String file;
-	private String realpathfile;
+	private String price;
 	private int del;
 	private int report;
-	private String liker;
-	
-	
+	private int posting;
+	private String geoLat;
+	private String geoLng;
+
 	public MarketDto() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	public MarketDto(String title, String content, Date wdate, String statement, String id, String product,
-			String category, int number, String condition, String view, String file, String realpathfile, int del,
-			int report, String liker) {
+
+	public MarketDto(String title, String content, String id, String state, String category, String productName,
+			int productNumber, String conditions, String geoLat, String geoLng) {
+		super();
+		this.title = title;
+		this.content = content;
+		this.id = id;
+		this.state = state;
+		this.category = category;
+		this.productName = productName;
+		this.productNumber = productNumber;
+		this.conditions = conditions;
+		this.geoLat = geoLat;
+		this.geoLng = geoLng;
+	}
+
+	public MarketDto(String title, String content, Date wdate, String id, String state, String category,
+			String productName, int productNumber, String conditions, String file, String price,
+			int del, int report, int posting) {
 		super();
 		this.title = title;
 		this.content = content;
 		this.wdate = wdate;
-		this.statement = statement;
 		this.id = id;
-		this.product = product;
+		this.state = state;
 		this.category = category;
-		this.number = number;
-		this.condition = condition;
-		this.view = view;
+		this.productName = productName;
+		this.productNumber = productNumber;
+		this.conditions = conditions;
 		this.file = file;
-		this.realpathfile = realpathfile;
+		this.price = price;
 		this.del = del;
 		this.report = report;
-		this.liker = liker;
+		this.posting = posting;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
 
 	public String getContent() {
 		return content;
 	}
 
-
 	public void setContent(String content) {
 		this.content = content;
 	}
-
 
 	public Date getWdate() {
 		return wdate;
 	}
 
-
 	public void setWdate(Date wdate) {
 		this.wdate = wdate;
 	}
 
-
-	public String getStatement() {
-		return statement;
+	public String getState() {
+		return state;
 	}
 
-
-	public void setStatement(String statement) {
-		this.statement = statement;
+	public void setState(String state) {
+		this.state = state;
 	}
-
 
 	public String getId() {
 		return id;
 	}
 
-
 	public void setId(String id) {
 		this.id = id;
 	}
 
-
-	public String getProduct() {
-		return product;
+	public String getProductName() {
+		return productName;
 	}
 
-
-	public void setProduct(String product) {
-		this.product = product;
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
-
 
 	public String getCategory() {
 		return category;
 	}
 
-
 	public void setCategory(String category) {
 		this.category = category;
 	}
 
-
-	public int getNumber() {
-		return number;
+	public int getProductNumber() {
+		return productNumber;
 	}
 
-
-	public void setNumber(int number) {
-		this.number = number;
+	public void setProductNumber(int productNumber) {
+		this.productNumber = productNumber;
 	}
 
-
-	public String getCondition() {
-		return condition;
+	public String getConditions() {
+		return conditions;
 	}
 
-
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public void setConditions(String conditions) {
+		this.conditions = conditions;
 	}
-
-
-	public String getView() {
-		return view;
-	}
-
-
-	public void setView(String view) {
-		this.view = view;
-	}
-
 
 	public String getFile() {
 		return file;
 	}
 
-
 	public void setFile(String file) {
 		this.file = file;
 	}
 
-
-	public String getRealpathfile() {
-		return realpathfile;
+	public String getPrice() {
+		return price;
 	}
 
-
-	public void setRealpathfile(String realpathfile) {
-		this.realpathfile = realpathfile;
+	public void setPrice(String price) {
+		this.price = price;
 	}
-
 
 	public int getDel() {
 		return del;
 	}
 
-
 	public void setDel(int del) {
 		this.del = del;
 	}
-
 
 	public int getReport() {
 		return report;
 	}
 
-
 	public void setReport(int report) {
 		this.report = report;
 	}
-
-
-	public String getLiker() {
-		return liker;
+	
+	public int getPosting() {
+		return posting;
 	}
 
+	public void setPosting(int posting) {
+		this.posting = posting;
+	}
 
-	public void setLiker(String liker) {
-		this.liker = liker;
+	public String getGeoLat() {
+		return geoLat;
+	}
+
+	public void setGeoLat(String geoLat) {
+		this.geoLat = geoLat;
+	}
+
+	public String getGeoLng() {
+		return geoLng;
+	}
+
+	public void setGeoLng(String geoLng) {
+		this.geoLng = geoLng;
 	}
 
 	@Override
 	public String toString() {
-		return "MarketDto [title=" + title + ", content=" + content + ", wdate=" + wdate + ", statement=" + statement
-				+ ", id=" + id + ", product=" + product + ", category=" + category + ", number=" + number
-				+ ", condition=" + condition + ", view=" + view + ", file=" + file + ", realpathfile=" + realpathfile
-				+ ", del=" + del + ", report=" + report + ", liker=" + liker + "]";
+		return "MarketDto [title=" + title + ", content=" + content + ", wdate=" + wdate + ", id=" + id + ", state="
+				+ state + ", category=" + category + ", productName=" + productName + ", productNumber=" + productNumber
+				+ ", conditions=" + conditions + ", file=" + file + ", price=" + price + ", del=" + del
+				+ ", report=" + report + ", posting=" + posting + ", geoLat=" + geoLat + ", geoLng=" + geoLng + "]";
 	}
-	
-	
-	
 }
