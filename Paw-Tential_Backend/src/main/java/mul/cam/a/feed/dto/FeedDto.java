@@ -1,17 +1,55 @@
 package mul.cam.a.feed.dto;
 
+import mul.cam.a.comment.dto.CommentDto;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 //Main Feed Dto
 public class FeedDto {
-      private String id;
-      private String content;
-      private String tag;
-      private String location;
-      private String filename;
-      private String realpathfile;
-      private LocalDateTime date_created;
-      private LocalDateTime date_updated;
+
+
+  private Long seq;
+  private String id;
+  private String content;
+  private String tag;
+  private String location;
+  private String filename;
+  private String realpathfile;
+  private LocalDateTime date_created;
+  private LocalDateTime date_updated;
+
+  private Integer favoriteSeq;
+
+
+
+  private Integer favoriteCount;
+  public List<CommentDto> getComments() {
+    return comments;
+  }
+
+  public Long getSeq() {
+    return seq;
+  }
+
+  public void setSeq(Long seq) {
+    this.seq = seq;
+  }
+
+  public Integer getFavoriteSeq() {
+    return favoriteSeq;
+  }
+
+  public void setFavoriteSeq(Integer favoriteSeq) {
+    this.favoriteSeq = favoriteSeq;
+  }
+
+  public void setComments(List<CommentDto> comments) {
+    this.comments = comments;
+  }
+
+  private List<CommentDto> comments = new ArrayList<>();
 
   public String getId() {
     return id;
@@ -75,6 +113,14 @@ public class FeedDto {
 
   public void setDate_updated(LocalDateTime date_updated) {
     this.date_updated = date_updated;
+  }
+
+  public Integer getFavoriteCount() {
+    return favoriteCount;
+  }
+
+  public void setFavoriteCount(Integer favoriteCount) {
+    this.favoriteCount = favoriteCount;
   }
 
   public FeedDto(String id, String content, String tag, String location, String filename, String realpathfile, LocalDateTime date_created, LocalDateTime date_updated) {

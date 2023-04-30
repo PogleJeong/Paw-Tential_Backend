@@ -19,6 +19,11 @@ public class FeedDaoImpl implements FeedDao{
     return session.selectList("Feed.getAllFeed");
   }
 
+  @Override
+  public List<FeedDto> getAllFeedByUserId(String userId) {
+    return session.selectList("Feed.getAllFeedByUserId", userId);
+  }
+
   //로그인시,팔로우피드 보이기
   @Override
   public List<FeedDto> getFollowToUsersFeed(String id) {

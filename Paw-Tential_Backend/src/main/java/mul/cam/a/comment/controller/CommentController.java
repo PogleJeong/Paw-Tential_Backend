@@ -22,7 +22,7 @@ public class CommentController {
   }
 
   //comment 저장
-@PostMapping("/Comment")
+@PostMapping("/Comments")
   public void addComment(@RequestBody CommentDto commentDto){
     System.out.println("CommentController baseLayout" + new Date());
     service.addComment(commentDto);
