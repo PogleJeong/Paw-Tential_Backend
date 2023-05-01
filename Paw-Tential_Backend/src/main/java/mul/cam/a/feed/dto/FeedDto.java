@@ -1,108 +1,126 @@
 package mul.cam.a.feed.dto;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 //Main Feed Dto
-public class FeedDto {
-      private String id;
-      private String content;
-      private String tag;
-      private String location;
-      private String filename;
-      private String realpathfile;
-      private LocalDateTime date_created;
-      private LocalDateTime date_updated;
+public class FeedDto implements Serializable {
+	private int seq;
+	private String id;
+	private String content;
+	private String tag;
+	private String location;
+	private String filename;
+	private String realpathfile;
+	@DateTimeFormat(pattern = "yy-MM-dd hh:mm")
+	private Date date_created;
+	private Date date_updated;
 
-  public String getId() {
-    return id;
-  }
+	public FeedDto() {
+	}
 
-  public void setId(String id) {
-    this.id = id;
-  }
+	public FeedDto(int seq, String id, String content, String tag, String location) {
+		super();
+		this.seq = seq;
+		this.id = id;
+		this.content = content;
+		this.tag = tag;
+		this.location = location;
+	}
 
-  public String getContent() {
-    return content;
-  }
+	public FeedDto(int seq, String id, String content, String tag, String location, String filename,
+			String realpathfile, Date date_created, Date date_updated) {
+		super();
+		this.seq = seq;
+		this.id = id;
+		this.content = content;
+		this.tag = tag;
+		this.location = location;
+		this.filename = filename;
+		this.realpathfile = realpathfile;
+		this.date_created = date_created;
+		this.date_updated = date_updated;
+	}
 
-  public void setContent(String content) {
-    this.content = content;
-  }
+	public int getSeq() {
+		return seq;
+	}
 
-  public String getTag() {
-    return tag;
-  }
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
 
-  public void setTag(String tag) {
-    this.tag = tag;
-  }
+	public String getId() {
+		return id;
+	}
 
-  public String getLocation() {
-    return location;
-  }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-  public void setLocation(String location) {
-    this.location = location;
-  }
+	public String getContent() {
+		return content;
+	}
 
-  public String getFilename() {
-    return filename;
-  }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-  public void setFilename(String filename) {
-    this.filename = filename;
-  }
+	public String getTag() {
+		return tag;
+	}
 
-  public String getRealpathfile() {
-    return realpathfile;
-  }
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
 
-  public void setRealpathfile(String realpathfile) {
-    this.realpathfile = realpathfile;
-  }
+	public String getLocation() {
+		return location;
+	}
 
-  public LocalDateTime getDate_created() {
-    return date_created;
-  }
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
-  public void setDate_created(LocalDateTime date_created) {
-    this.date_created = date_created;
-  }
+	public String getFilename() {
+		return filename;
+	}
 
-  public LocalDateTime getDate_updated() {
-    return date_updated;
-  }
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
 
-  public void setDate_updated(LocalDateTime date_updated) {
-    this.date_updated = date_updated;
-  }
+	public String getRealpathfile() {
+		return realpathfile;
+	}
 
-  public FeedDto(String id, String content, String tag, String location, String filename, String realpathfile, LocalDateTime date_created, LocalDateTime date_updated) {
-    this.id = id;
-    this.content = content;
-    this.tag = tag;
-    this.location = location;
-    this.filename = filename;
-    this.realpathfile = realpathfile;
-    this.date_created = date_created;
-    this.date_updated = date_updated;
-  }
+	public void setRealpathfile(String realpathfile) {
+		this.realpathfile = realpathfile;
+	}
 
-  public FeedDto() {
-    super();
-  }
+	public Date getDate_created() {
+		return date_created;
+	}
 
-  @Override
-  public String toString() {
-    return "BoardDto{" +
-        "id='" + id + '\'' +
-        ", content='" + content + '\'' +
-        ", tag='" + tag + '\'' +
-        ", location='" + location + '\'' +
-        ", filename='" + filename + '\'' +
-        ", realpathfile='" + realpathfile + '\'' +
-        ", date_created=" + date_created +
-        ", date_updated=" + date_updated +
-        '}';
-  }
+	public void setDate_created(Date date_created) {
+		this.date_created = date_created;
+	}
+
+	public Date getDate_updated() {
+		return date_updated;
+	}
+
+	public void setDate_updated(Date date_updated) {
+		this.date_updated = date_updated;
+	}
+
+	@Override
+	public String toString() {
+		return "FeedDto [seq=" + seq + ", id=" + id + ", content=" + content + ", tag=" + tag + ", location=" + location
+				+ ", filename=" + filename + ", realpathfile=" + realpathfile + ", date_created=" + date_created
+				+ ", date_updated=" + date_updated + "]";
+	}
+
 }
