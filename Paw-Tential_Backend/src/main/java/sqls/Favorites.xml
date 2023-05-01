@@ -19,7 +19,7 @@
   <!-- Favorites -->
 
 
-<!-- Favorites취소 -->
+	<!-- Favorites취소 -->
   <delete id="deleteFavorites" parameterType="mul.cam.a.favorites.dto.FavoritesDto">
     delete
     from Favorites
@@ -29,11 +29,11 @@
 
 
 
-
+	<!-- 
   <insert id="addFavorites" parameterType="mul.cam.a.favorites.dto.FavoritesDto">
     insert into  favorites(seq, feed_seq, id)
     VALUES (#{seq},#{feed_seq},#{id})
   </insert>
-
+ 	 -->
 
 </mapper>
