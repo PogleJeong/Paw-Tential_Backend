@@ -16,17 +16,4 @@
     values (#{feed_seq},#{id})
   </insert>
 
-
-
-  <select id="getAllBookmark" resultType="mul.cam.a.feed.dto.FeedDto">
-    select *
-    from bookmark
-  </select>
-
-
-<!--Bookmark저장-->
-  <insert id="addBookmark" parameterType="mul.cam.a.comment.dto.CommentDto">
-    insert into bookmark(seq,feed_seq,id)
-    values (#{seq},#{feed_seq},#{id})
-  </insert>
 </mapper>

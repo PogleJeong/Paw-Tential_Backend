@@ -2,153 +2,162 @@ package mul.cam.a.feed.dto;
 
 import mul.cam.a.comment.dto.CommentDto;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 //Main Feed Dto
-public class FeedDto {
+public class FeedDto implements Serializable {
+
+	private int seq;
+	private String id;
+	private String content;
+	private String tag;
+	private String location;
+	private String filename;
+	private String realpathfile;
+	@DateTimeFormat(pattern = "yy-MM-dd hh:mm")
+	private Date date_created;
+	private Date date_updated;
+
+	private int favoriteSeq;
+
+	private Integer favoriteCount;
+	
+	public FeedDto() {
+	}
+
+	public FeedDto(int seq, String id, String content, String tag, String location) {
+		super();
+		this.seq = seq;
+		this.id = id;
+		this.content = content;
+		this.tag = tag;
+		this.location = location;
+	}
+
+	public FeedDto(int seq, String id, String content, String tag, String location, String filename,
+			String realpathfile, Date date_created, Date date_updated) {
+		super();
+		this.seq = seq;
+		this.id = id;
+		this.content = content;
+		this.tag = tag;
+		this.location = location;
+		this.filename = filename;
+		this.realpathfile = realpathfile;
+		this.date_created = date_created;
+		this.date_updated = date_updated;
+	}
+
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
+
+	public List<CommentDto> getComments() {
+		return comments;
+	}
 
 
-  private Long seq;
-  private String id;
-  private String content;
-  private String tag;
-  private String location;
-  private String filename;
-  private String realpathfile;
-  private LocalDateTime date_created;
-  private LocalDateTime date_updated;
+	public int getFavoriteSeq() {
+		return favoriteSeq;
+	}
 
-  private Integer favoriteSeq;
+	public void setFavoriteSeq(int favoriteSeq) {
+		this.favoriteSeq = favoriteSeq;
+	}
 
+	public void setComments(List<CommentDto> comments) {
+		this.comments = comments;
+	}
 
+	private List<CommentDto> comments = new ArrayList<>();
 
-  private Integer favoriteCount;
-  public List<CommentDto> getComments() {
-    return comments;
-  }
+	public String getId() {
+		return id;
+	}
 
-  public Long getSeq() {
-    return seq;
-  }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-  public void setSeq(Long seq) {
-    this.seq = seq;
-  }
+	public String getContent() {
+		return content;
+	}
 
-  public Integer getFavoriteSeq() {
-    return favoriteSeq;
-  }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-  public void setFavoriteSeq(Integer favoriteSeq) {
-    this.favoriteSeq = favoriteSeq;
-  }
+	public String getTag() {
+		return tag;
+	}
 
-  public void setComments(List<CommentDto> comments) {
-    this.comments = comments;
-  }
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
 
-  private List<CommentDto> comments = new ArrayList<>();
+	public String getLocation() {
+		return location;
+	}
 
-  public String getId() {
-    return id;
-  }
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
-  public void setId(String id) {
-    this.id = id;
-  }
+	public String getFilename() {
+		return filename;
+	}
 
-  public String getContent() {
-    return content;
-  }
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
 
-  public void setContent(String content) {
-    this.content = content;
-  }
+	public String getRealpathfile() {
+		return realpathfile;
+	}
 
-  public String getTag() {
-    return tag;
-  }
+	public void setRealpathfile(String realpathfile) {
+		this.realpathfile = realpathfile;
+	}
 
-  public void setTag(String tag) {
-    this.tag = tag;
-  }
+	public Date getDate_created() {
+		return date_created;
+	}
 
-  public String getLocation() {
-    return location;
-  }
+	public void setDate_created(Date date_created) {
+		this.date_created = date_created;
+	}
 
-  public void setLocation(String location) {
-    this.location = location;
-  }
+	public Date getDate_updated() {
+		return date_updated;
+	}
 
-  public String getFilename() {
-    return filename;
-  }
+	public void setDate_updated(Date date_updated) {
+		this.date_updated = date_updated;
+	}
 
-  public void setFilename(String filename) {
-    this.filename = filename;
-  }
+	public Integer getFavoriteCount() {
+		return favoriteCount;
+	}
 
-  public String getRealpathfile() {
-    return realpathfile;
-  }
+	public void setFavoriteCount(Integer favoriteCount) {
+		this.favoriteCount = favoriteCount;
+	}
 
-  public void setRealpathfile(String realpathfile) {
-    this.realpathfile = realpathfile;
-  }
+	@Override
+	public String toString() {
+		return "FeedDto [seq=" + seq + ", id=" + id + ", content=" + content + ", tag=" + tag + ", location=" + location
+				+ ", filename=" + filename + ", realpathfile=" + realpathfile + ", date_created=" + date_created
+				+ ", date_updated=" + date_updated + ", favoriteSeq=" + favoriteSeq + ", favoriteCount=" + favoriteCount
+				+ ", comments=" + comments + "]";
+	}
 
-  public LocalDateTime getDate_created() {
-    return date_created;
-  }
-
-  public void setDate_created(LocalDateTime date_created) {
-    this.date_created = date_created;
-  }
-
-  public LocalDateTime getDate_updated() {
-    return date_updated;
-  }
-
-  public void setDate_updated(LocalDateTime date_updated) {
-    this.date_updated = date_updated;
-  }
-
-  public Integer getFavoriteCount() {
-    return favoriteCount;
-  }
-
-  public void setFavoriteCount(Integer favoriteCount) {
-    this.favoriteCount = favoriteCount;
-  }
-
-  public FeedDto(String id, String content, String tag, String location, String filename, String realpathfile, LocalDateTime date_created, LocalDateTime date_updated) {
-    this.id = id;
-    this.content = content;
-    this.tag = tag;
-    this.location = location;
-    this.filename = filename;
-    this.realpathfile = realpathfile;
-    this.date_created = date_created;
-    this.date_updated = date_updated;
-  }
-
-  public FeedDto() {
-    super();
-  }
-
-  @Override
-  public String toString() {
-    return "BoardDto{" +
-        "id='" + id + '\'' +
-        ", content='" + content + '\'' +
-        ", tag='" + tag + '\'' +
-        ", location='" + location + '\'' +
-        ", filename='" + filename + '\'' +
-        ", realpathfile='" + realpathfile + '\'' +
-        ", date_created=" + date_created +
-        ", date_updated=" + date_updated +
-        '}';
-  }
 }
