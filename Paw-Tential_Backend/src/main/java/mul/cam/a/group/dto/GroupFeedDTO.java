@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class GroupFeedDTO implements Serializable {
 
 	private int grpNo, grpFeedNo, grpFeedLikeCount;
-	private String grpFeedContent, grpFeedSetting, grpFeedId;
+	private String grpName, grpFeedContent, grpFeedSetting, grpFeedId;
 	@DateTimeFormat(pattern = "yy-MM-dd hh:mm")
 	private Date grpFeedWd;
 	
@@ -16,12 +16,13 @@ public class GroupFeedDTO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public GroupFeedDTO(int grpNo, int grpFeedNo, int grpFeedLikeCount, String grpFeedContent, String grpFeedSetting,
-			String grpFeedId, Date grpFeedWd) {
+	public GroupFeedDTO(int grpNo, int grpFeedNo, int grpFeedLikeCount, String grpName, String grpFeedContent,
+			String grpFeedSetting, String grpFeedId, Date grpFeedWd) {
 		super();
 		this.grpNo = grpNo;
 		this.grpFeedNo = grpFeedNo;
 		this.grpFeedLikeCount = grpFeedLikeCount;
+		this.grpName = grpName;
 		this.grpFeedContent = grpFeedContent;
 		this.grpFeedSetting = grpFeedSetting;
 		this.grpFeedId = grpFeedId;
@@ -50,6 +51,14 @@ public class GroupFeedDTO implements Serializable {
 
 	public void setGrpFeedLikeCount(int grpFeedLikeCount) {
 		this.grpFeedLikeCount = grpFeedLikeCount;
+	}
+
+	public String getGrpName() {
+		return grpName;
+	}
+
+	public void setGrpName(String grpName) {
+		this.grpName = grpName;
 	}
 
 	public String getGrpFeedContent() {
@@ -87,9 +96,11 @@ public class GroupFeedDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "GroupFeedDTO [grpNo=" + grpNo + ", grpFeedNo=" + grpFeedNo + ", grpFeedLikeCount=" + grpFeedLikeCount
-				+ ", grpFeedContent=" + grpFeedContent + ", grpFeedSetting=" + grpFeedSetting + ", grpFeedId="
-				+ grpFeedId + ", grpFeedWd=" + grpFeedWd + "]";
+				+ ", grpName=" + grpName + ", grpFeedContent=" + grpFeedContent + ", grpFeedSetting=" + grpFeedSetting
+				+ ", grpFeedId=" + grpFeedId + ", grpFeedWd=" + grpFeedWd + "]";
 	}
+	
+	
 	
 	
 	

@@ -50,15 +50,32 @@ public class MemberService {
 		return dao.idAndEmailCheck(idAndEmail) != null ? "exist": "notExist" ;
 	}
 	
-	public MemberDto login(MemberDto member) {
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	public HashMap<String, Object> login(MemberDto member) {
+		System.out.println("login service >> " + new Date());
+		HashMap<String, Object> loginResult = new HashMap<>();
+		
+		// 해당 ID가 존재하는지
+		MemberDto userInfo = dao.login(member); // id 를 이용해 user 정보가져옴
+		if (userInfo == null) {
+			loginResult.put("state", "LOGIN_NOT_FOUND_ID");
+			loginResult.put("userInfo", null);
+			return loginResult;
+		}
+	
 		// DB에서 해싱비밀번호를 꺼내고 비교해야함 (같은 비밀번호를 해싱하여도 다른값이 나오기 때문)
-		System.out.println("로그인 >> " + new Date());
-		MemberDto loginMember = dao.login(member); // id 를 이용해 user 정보가져옴
-		boolean matchPassword = passwordEncoder.matches(member.getPwd(), loginMember.getPwd());
-		System.out.println("로그인한 PWD >> " + member.getPwd());
-		System.out.println("DB에 있는 HASH PWD >> " + loginMember.getPwd());
-		return matchPassword==true ? loginMember : null;
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		
+		boolean matchPassword = passwordEncoder.matches(member.getPwd(), userInfo.getPwd());
+		
+		if (matchPassword == false) {
+			loginResult.put("state", "LOGIN_NOT_MATCH_PASSWORD");
+			loginResult.put("userInfo", null);
+			return loginResult;
+		}
+		loginResult.put("state", "LOGIN_SUCCESS");
+		loginResult.put("userId", userInfo.getId());
+		
+		return loginResult;
 	}
 	
 	public boolean addMember(MemberDto member) {

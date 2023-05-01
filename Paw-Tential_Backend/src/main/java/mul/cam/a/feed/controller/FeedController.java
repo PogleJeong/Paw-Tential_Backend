@@ -20,7 +20,7 @@ public class FeedController {
   @GetMapping("/mainFeed")
   public List<FeedDto> mainFeed(){
     System.out.println("mainFeed baseLayout" + new Date());
-    List<FeedDto> feed = service.feed();
+    List<FeedDto> feed = service.getAllFeedByUserId("test");
     return feed;
   }
   //로그인후,팔로우한 피드까지 불러오기

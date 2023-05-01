@@ -26,4 +26,6 @@ public interface MemberDao {
 	int updateEmailAuth(AuthenticationDto authentication);
 	int deleteAuthKeyAfterConfirm(AuthenticationDto authentication);
 	int confirmAuthKey(AuthenticationDto authentication);
+	
+
 }

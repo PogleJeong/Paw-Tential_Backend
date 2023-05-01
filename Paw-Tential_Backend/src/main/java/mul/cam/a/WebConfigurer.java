@@ -1,6 +1,7 @@
 package mul.cam.a;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -11,6 +12,11 @@ public class WebConfigurer implements WebMvcConfigurer{
 	public void addCorsMappings(CorsRegistry registry) {		
 		System.out.println("WebConfigurer 접속 클라이언트를 허가");
 		// 접속 클라이언트를 허가
-		registry.addMapping("/**").allowedOrigins("http://localhost:9001");
+		registry.addMapping("/**")
+				.allowedOrigins("*")
+				.allowedMethods(HttpMethod.GET.name(),
+						HttpMethod.POST.name(),
+						HttpMethod.PUT.name(),
+						HttpMethod.DELETE.name());
 	}
 }

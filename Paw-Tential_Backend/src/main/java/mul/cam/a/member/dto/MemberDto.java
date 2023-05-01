@@ -136,26 +136,11 @@ public class MemberDto {
 	public void setAuth(int auth) {
 		this.auth = auth;
 	}
-	
-	
+	@Override
+	public String toString() {
+		return "MemberDto [id=" + id + ", pwd=" + pwd + ", email=" + email + ", nickname=" + nickname + ", phone="
+				+ phone + ", birth=" + birth + ", gender=" + gender + ", profile=" + profile + ", intro=" + intro
+				+ ", petHave=" + petHave + ", status=" + status + ", regiDate=" + regiDate + ", groupId=" + groupId
+				+ ", groupStatus=" + groupStatus + ", auth=" + auth + "]";
+	}
 }
-/*
-(
-	    `id`           VARCHAR(45)    NOT NULL    COMMENT '아이디. 아이디', 
-	    `pwd`          VARCHAR(45)    NOT NULL    COMMENT '비밀번호. 비밀번호', 
-	    `email`        VARCHAR(45)    NOT NULL    COMMENT '이메일. 이메일', 
-	    `nickname`     VARCHAR(45)    NOT NULL    COMMENT '닉네임. 닉네임', 
-	    `phone`        VARCHAR(45)    NOT NULL    COMMENT '전화번호. 전화번호', 
-	    `birth`        VARCHAR(45)    NOT NULL    COMMENT '생년월일. 생년월일', 
-	    `gender`       DECIMAL(1)     NOT NULL    COMMENT '성별(남0 여1). 성별(남0 여1)', 
-	    `profile`      VARCHAR(45)    NOT NULL    COMMENT '프로필 이미지. 프로필 이미지', 
-	    `intro`        VARCHAR(45)    NOT NULL    COMMENT '자기소개. 자기소개', 
-	    `petHave`      DECIMAL(1)     NOT NULL    COMMENT '반려동물 여부(없다 0 있다 1). 반려동물 여부(없다 0 있다 1)', 
-	    `status`       DECIMAL(1)     NOT NULL    COMMENT '회원 상태(0 정상 1 정지). 회원 상태(0 정상 1 정지)', 
-	    `regiDate`     TIMESTAMP      NOT NULL    COMMENT '회원 가입 날짜. 회원 가입 날짜', 
-	    `groupId`      VARCHAR(45)    NOT NULL    COMMENT '그룹 ID. 그룹 ID', 
-	    `groupStatus`  DECIMAL(1)     NOT NULL    COMMENT '그룹 가입여부(가입x 0, 가입o 1). 그룹 가입여부(가입x 0, 가입o 1)', 
-	    `auth`         DECIMAL(1)     NOT NULL    COMMENT '일반(0) 관리자(1). 일반(0) 관리자(1)', 
-	     PRIMARY KEY (id)
-	);
-*/

@@ -20,8 +20,14 @@ public class FavoritesServiceImpl implements FavoritesService{
   }
 
   @Override
-  public void addFavorites(FavoritesDto favoritesDto) {
-    dao.addFavorites(favoritesDto);
+  public int addFavorites(FavoritesDto favoritesDto) {
+    return dao.addFavorites(favoritesDto);
 
   }
+
+  @Override
+  public void deleteFavorites(Integer seq) {
+    dao.deleteFavorites(seq);
+  }
+
 }

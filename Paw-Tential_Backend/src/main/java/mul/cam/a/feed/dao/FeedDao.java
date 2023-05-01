@@ -12,6 +12,7 @@ public interface FeedDao {
 
    List<FeedDto> mainFeed();
 
+   List<FeedDto> getAllFeedByUserId(String userId);
 
    List<FeedDto> getFollowToUsersFeed(String id);
 }
