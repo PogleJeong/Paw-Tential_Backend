@@ -19,15 +19,12 @@
   <!-- Favorites -->
 
 
-<!-- Favorites취소 -->
+	<!-- Favorites취소 -->
   <delete id="deleteFavorites" parameterType="mul.cam.a.favorites.dto.FavoritesDto">
     delete
     from Favorites
     where seq = #{seq}
   </delete>
-
-
-
 
 
 
