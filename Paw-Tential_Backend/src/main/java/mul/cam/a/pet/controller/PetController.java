@@ -27,10 +27,9 @@ public class PetController {
 			@RequestPart("petInfo")PetDto petInfo,
 			HttpServletRequest req) {
 		System.out.println("fileUpload" + new Date());
-		System.out.println();
 		
 		// 업로드한 파일 저장할 위치 설정
-		String uploadPath = req.getServletContext().getRealPath("/upload");
+		String uploadPath = req.getServletContext().getRealPath("/upload/market");
 		
 		// 저장했을 때 파일이름. (중복을 막기 위하여 새로운 파일이름)
 		String fileName = fileUpload.getOriginalFilename();

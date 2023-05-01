@@ -32,12 +32,12 @@ public List <FollowDto> getAllFollowId(String id){
 
   @Override
   public void update(FollowDto followDto) {
-    session.update(ns + "updateFollow", followDto); // xml 추가해주세요
+    session.update(ns + "updateFollow", followDto);
   }
 
   @Override
   public void delete(Integer seq) {
-    session.delete(ns + "deleteFollow", seq); // xml 추가해주세요
+    session.delete(ns + "deleteFollow", seq);
   }
 
   public FollowDto getBySeq(Integer seq) {

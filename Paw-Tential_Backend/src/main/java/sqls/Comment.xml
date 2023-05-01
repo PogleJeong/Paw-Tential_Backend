@@ -13,6 +13,7 @@
 <insert id="addComment" parameterType="mul.cam.a.comment.dto.CommentDto">
    insert into  comment(seq, feed_seq, id, comment, date_created, date_updated)
     values  (#{seq},#{feed_seq},#{id},#{comment},#{date_created},#{date_updated} )
+
 </insert>
 
 

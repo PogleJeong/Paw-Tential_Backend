@@ -32,11 +32,15 @@ public class MemberController {
 	}
 	
 	@PostMapping(value="/login")
-	public MemberDto login(String id, String password) {
+	public HashMap<String, Object> login(String id, String password) {
+		System.out.println("login controller >> " + new Date());
 		System.out.println("login : "+ new Date());
-		System.out.println("id >> " + id + "\n pwd >> " + password);
 		MemberDto member = new MemberDto(id, password);
-		return service.login(member);
+		
+		HashMap<String, Object> loginResult = service.login(member);
+		System.out.println(loginResult.get("state"));
+		System.out.println(loginResult.get("userId"));
+		return loginResult;
 	}
 	
 	@PostMapping(value="/register")

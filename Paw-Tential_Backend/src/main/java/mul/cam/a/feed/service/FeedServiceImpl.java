@@ -1,5 +1,6 @@
 package mul.cam.a.feed.service;
 
+import mul.cam.a.comment.dao.CommentDao;
 import mul.cam.a.feed.dao.FeedDao;
 import mul.cam.a.feed.dto.FeedDto;
 import mul.cam.a.follow.dto.FollowDto;
@@ -13,9 +14,15 @@ public class FeedServiceImpl implements FeedService{
 
   @Autowired
   FeedDao dao;
+
   @Override
   public List<FeedDto> feed() {
     return dao.mainFeed();
+  }
+
+  @Override
+  public List<FeedDto> getAllFeedByUserId(String userId) {
+    return dao.getAllFeedByUserId(userId);
   }
 
   @Override
