@@ -6,12 +6,13 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import mul.cam.a.market.dto.MarketDto;
+import mul.cam.a.market.dto.MarketReportDto;
 
 @Mapper
 @Repository
 public interface MarketDao {
 	//MarketDto marketSearch(String id);
-	MarketDto[] printAllMarketList();
+	MarketDto[] printAllMarketList(int page);
 	MarketDto[] searchMarket(HashMap<String, Object> searchInfo);
 	
 	int writeMarket(MarketDto writeMarketInfo);
@@ -26,4 +27,6 @@ public interface MarketDao {
 	int marketClickHistoryOfLike(HashMap<String, Object> sendInfo);
 	int marketAddLike(HashMap<String, Object> sendInfo);
 	int marketRemoveLike(HashMap<String, Object> sendInfo);
+
+	int reportMarket(MarketReportDto reportInfo);
 }

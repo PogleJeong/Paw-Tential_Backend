@@ -40,14 +40,23 @@ public class MemberService {
 	MemberDao dao;
 	
 	public String idCheck(String id) {
-		return dao.idCheck(id) > 0 ? "exist" : "notExist";
+		return dao.idCheck(id) > 0 ? "EXIST" : "NOT_EXIST";
 	}
+	
+	public String emailCheck(String email) {
+		return dao.emailCheck(email) > 0 ? "EXIST" : "NOT_EXIST";
+	}
+	
 	public String nicknameCheck(String nickname) {
-		return dao.nicknameCheck(nickname) > 0 ? "exist" : "notExist";
+		return dao.nicknameCheck(nickname) > 0 ? "EXIST" : "NOT_EXIST";
 	}
 	
 	public String idAndEmailCheck(HashMap<String, Object> idAndEmail) {
 		return dao.idAndEmailCheck(idAndEmail) != null ? "exist": "notExist" ;
+	}
+	
+	public String getNickname(String id) {
+		return dao.getNickname(id);
 	}
 	
 	public HashMap<String, Object> login(MemberDto member) {
@@ -73,7 +82,8 @@ public class MemberService {
 			return loginResult;
 		}
 		loginResult.put("state", "LOGIN_SUCCESS");
-		loginResult.put("userId", userInfo.getId());
+		loginResult.put("USER_ID", userInfo.getId());
+		loginResult.put("USER_NICKNAME", userInfo.getNickname());
 		
 		return loginResult;
 	}
@@ -89,12 +99,40 @@ public class MemberService {
 		return dao.addMember(member) > 0 ? true : false;
 	}
 	
+	// 회원가입 이후 해당 유저의 id를 반환
+	public HashMap<String, Object> addMemberByKakao(HashMap<String, Object> kakaoInfo) {
+		// 카카오 회원가입에서 id는 램덤생성해서 삽입
+		String RANDOM_ID = createRandomId("Kakao");
+		kakaoInfo.put("id", RANDOM_ID);
+		boolean result = dao.addMemberByKakao(kakaoInfo) > 0 ? true: false;
+		
+		if (!result) System.out.println("카카오로그인 회원가입 실패");
+		
+		return kakaoInfo;
+	}
+	
+	// 회원가입 이후 해당 유저의 id를 반환
+	public HashMap<String, Object> addMemberByNaver(HashMap<String, Object> naverInfo) {
+		// 카카오 회원가입에서 id는 램덤생성해서 삽입
+		String RANDOM_ID = createRandomId("Naver");
+		naverInfo.put("id", RANDOM_ID);
+		boolean result = dao.addMemberByNaver(naverInfo) > 0 ? true : false;
+		
+		if (!result) System.out.println("네이버 회원가입 실패");
+		return naverInfo;
+	}
+	
 	public String findId(HashMap<String, Object> emailAndPhone) {
 		System.out.println("findId : service " + new Date());
 		System.out.println(emailAndPhone.get("email"));
 		System.out.println(emailAndPhone.get("phone"));
 		
 		return dao.findId(emailAndPhone);
+	}
+	
+	public String findIdByEmail(String email) {
+		System.out.println("find ID by Email : service " + new Date());
+		return dao.findIdByEmail(email);
 	}
 	
 	public boolean resetPassword(MemberDto member) {
@@ -106,7 +144,7 @@ public class MemberService {
 	
 	// 공식문서 참조 (액세스 토큰) - REST API 토큰받기 부분 
 	// 공식문서 : Auth code 만으로는 로그인을 할 수 없습니다. 토큰받기까지 마쳐야 로그인을 정상적으로 할 수 있습니다.
-	public String getAccessToken(String AuthCode) {
+	public String getKakaoAccessToken(String AuthCode) {
 		String CLIENT_ID = "83e8bb6f53c1f3fcc8901a9678d3eaa3";
 		String REDIRECT_URI = "http://localhost:3000/kakaoAuth";
 		
@@ -180,9 +218,72 @@ public class MemberService {
 		return ACCESS_TOKEN;
 	}
 	
-	// 사용자정보가져오기
+	public String getNaverAccessToken(String authCode) {
+		String REQUEST_URL = "https://nid.naver.com/oauth2.0/token";
+				
+		String GRANT_TYPE = "authorization_code";
+		String CLIENT_ID = "UP1Ll7qeXuqAoC6oqcxk";
+		String CLIENT_SECRET = "jHnDPo3Hua";
+		String CODE = authCode;
+		String STATE = "1234ABCD";
+		
+		String ACCESS_TOKEN = "";
+		String REFRESH_TOKEN = "";
+		try {
+			URL url = new URL(REQUEST_URL);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			
+			conn.setRequestMethod("POST"); // Token: POST request
+			conn.setDoOutput(true); // post 요청
+			
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+			StringBuilder sb = new StringBuilder();
+			// request parameter 추가
+			sb.append("grant_type="+ GRANT_TYPE);
+			sb.append("&client_id="+ CLIENT_ID);
+			sb.append("&client_secret="+ CLIENT_SECRET);
+			sb.append("&code="+ CODE);
+			sb.append("&state="+ STATE);
+			
+			// flush() : 버퍼(임시메모리)에 있는 데이터를 모두 처리 : write() 함수 후에 쓰는것이 좋음.
+			bw.write(sb.toString());
+			bw.flush(); 
+			
+			// url 보내고 reponse 를 받아옴
+			int responseStatusCode = conn.getResponseCode();
+			System.out.println("status: " + responseStatusCode);
+			
+			// Response 가져오기
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			// 개행을 기준으로 가져오므로 
+			String responseOneLine = "";
+			String responseBody = "";
+			while ((responseOneLine = br.readLine()) != null) {
+				responseBody += responseOneLine;
+			}
+			System.out.println("response body: " + responseBody);
+			
+			Gson gson = new Gson();
+			// Json 문자열 -> Map
+	        Map<String, Object> responseBodyMap = gson.fromJson(responseBody, Map.class);
+	 
+	        // Map 출력
+	        for (Map.Entry<String, Object> entry : responseBodyMap.entrySet()) {
+	            System.out.println(entry.getKey() + "=" + entry.getValue());
+	        }
+	        ACCESS_TOKEN = (String)responseBodyMap.get("access_token");
+	        REFRESH_TOKEN = (String)responseBodyMap.get("refresh_token");
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return ACCESS_TOKEN;
+	}
+	
+	// 사용자정보가져오기 (카카오)
 	// 사용자정보가져오기 공식문서 참고
-	public HashMap<String, Object> getUserInfo(String ACCESS_TOKEN) throws Throwable {
+	public HashMap<String, Object> getKakaoInfo(String ACCESS_TOKEN) throws Throwable {
 		// 유저의 정보들은 각각 존재하는 정보가 다를 수 있으므로 HasgMap으로 받음
 		HashMap<String, Object> userInfo = new HashMap<String, Object>();
 		String requestURL = "https://kapi.kakao.com/v2/user/me";
@@ -219,11 +320,17 @@ public class MemberService {
 				Map<String, Object> properties = (Map<String, Object>)userInfoMap.get("properties");
 				Map<String, Object> kakao_account = (Map<String, Object>)userInfoMap.get("kakao_account");
 				
-				// properties 에서 정보가져오기 (nickname)
+				// response 에서 (property, kakao_account) 정보가져오기
 				userInfo.put("nickname", properties.get("nickname"));
-				//출력 : System.out.println(gson.toJson(userInfo));
+				userInfo.put("email", kakao_account.get("email"));
+				userInfo.put("birth", (String)kakao_account.get("birthyear") + (String)kakao_account.get("birthday"));
 				
-				// 유저 properties 와 
+				// kakao 정보에서 성별 참고
+				if(kakao_account.get("gender").equals("male")) {
+					userInfo.put("gender", 0);
+				} else {
+					userInfo.put("gender", 1);
+				}
 				
 			} catch(Exception e) {
 				e.printStackTrace();
@@ -235,6 +342,69 @@ public class MemberService {
 		return userInfo;
 	}
 	
+	// 사용자정보가져오기 (네이버)
+	// 사용자정보가져오기 공식문서 참고
+	public HashMap<String, Object> getNaverInfo(String ACCESS_TOKEN) throws Throwable {
+		// 유저의 정보들은 각각 존재하는 정보가 다를 수 있으므로 HasgMap으로 받음
+		HashMap<String, Object> userInfo = new HashMap<String, Object>();
+		String requestURL = "https://openapi.naver.com/v1/nid/me";
+		
+		try {
+			URL url = new URL(requestURL);
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Authorization", "Bearer " + ACCESS_TOKEN);
+			/*
+			 	GET/POST /v2/user/me HTTP/1.1
+				Host: kapi.kakao.com
+				Authorization: Bearer ${ACCESS_TOKEN}/KakaoAK ${APP_ADMIN_KEY}
+				Content-type: application/x-www-form-urlencoded;charset=utf-8
+			*/
+			int responseStatusCode = conn.getResponseCode();
+			System.out.println("get UserInfo status >>" + responseStatusCode);
+			
+			// response body 읽기
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String responseOneLine = "";
+			String responseBody = "";
+			while((responseOneLine = br.readLine()) != null) {
+				responseBody += responseOneLine;
+			}
+			System.out.println("response body : get user info >> " + responseBody);
+			
+			// 유저정보를 Map 에 저장
+			try {
+				Gson gson = new Gson();
+				Map<String, Object> userInfoMap = gson.fromJson(responseBody, Map.class);
+				
+				// 유저정보는 properties 와 kakao_account 로 나뉘어져있음
+				Map<String, Object> naver_response = (Map<String, Object>)userInfoMap.get("response");
+				
+				// response 에서 네이버 정보가져오기
+				userInfo.put("nickname", naver_response.get("nickname"));
+				userInfo.put("email", naver_response.get("email"));
+				userInfo.put("birth", (String)naver_response.get("birthyear") + ((String)naver_response.get("birthday")).replace("-",""));
+				userInfo.put("phone", ((String)naver_response.get("mobile")).replace("-", ""));
+				// NAVER 에서 성별 참고
+				if(naver_response.get("gender").equals("M")) {
+					userInfo.put("gender", 0);
+				} else if (naver_response.get("gender").equals("F")){
+					userInfo.put("gender", 1);
+				} else {
+					userInfo.put("gende", "");
+				}
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return userInfo;
+	}
+	
+	// 랜덤인증키 생성
 	public String createRandomAuthKey() {
 		String authKey = "";
 		int alphaOrNumber;
@@ -256,6 +426,24 @@ public class MemberService {
 		return authKey;
 	}
 	
+	// 카카오로그인 시 카카오전용 ID 랜덤생성
+	public String createRandomId(String SNS) {
+		System.out.println("create random id, memberservice >> " + new Date());
+		String randomId = "";
+		if (SNS.equals("KAKAO")) randomId += "Kakao";
+		else randomId += "Naver";
+		
+		String code = "";
+		for (int i=0; i<3; i++) {
+			code += (char)(int)(Math.random()*26 + 97);
+		}
+		randomId += new Date().getTime() + code;
+		
+		System.out.println(randomId);
+		return randomId;
+	}
+	
+	// 이메일 인증시 사용함 - 비밀번호재발급
 	public String addEmailAuth(AuthenticationDto authentication) {
 		Boolean authExist = dao.checkExistEmailAuth(authentication)>0 ? true : false;
 		
@@ -267,6 +455,7 @@ public class MemberService {
 		}
 	}
 	
+	// 이메일 인증시 해당 이메일로 인증번호 전달
 	public void sendEmailMessage(String authKey, String email) {
 		String recipient = email;
         String code = authKey;
