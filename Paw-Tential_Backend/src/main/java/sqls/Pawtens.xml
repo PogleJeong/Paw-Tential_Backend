@@ -4,29 +4,35 @@
 
 <mapper namespace="mul.cam.a.pawtens.dao.PawtensDao">
 
-<!-- 포텐스 목록 (검색, 페이징) -->
-<select id="pawtensList" parameterType="mul.cam.a.feed.dto.FeedParam" resultType="mul.cam.a.feed.dto.FeedDto">
-	select seq, id, content, tag, location, filename, date_created, date_updated, realpathfile
-	from 
-		( select row_number()over(order by seq desc) as rnum,
-		    seq, id, content, tag, location, filename, date_created, date_updated, realpathfile
-			from feed 
-			where 1=1 
-			<if test="search != null and search != ''">
-				and content like concat('%', #{search}, '%')
-			</if>
-			order by seq desc
-		) a
-		where rnum between #{start} and #{end}
-</select>
+	<!-- 포텐스 목록 (검색, 페이징) -->
+	<select id="pawtensList" parameterType="mul.cam.a.feed.dto.FeedParam" resultType="mul.cam.a.feed.dto.FeedDto">
+		select seq, id, content, tag, location, filename, date_created, date_updated, realpathfile
+		from 
+			( select row_number()over(order by seq desc) as rnum,
+			    seq, id, content, tag, location, filename, date_created, date_updated, realpathfile
+				from feed 
+				where 1=1 
+				<if test="search != null and search != ''">
+					and content like concat('%&lt;p&gt;%', #{search}, '%&lt;/p&gt;%')
+				</if>
+				order by seq desc
+			) a
+			where rnum between #{start} and #{end}
+	</select>
+	
+	<!-- 포텐스 총 개수 -->
+	<select id="getAllPawtens" parameterType="mul.cam.a.feed.dto.FeedParam" resultType="Integer">
+		select ifnull(count(*), 0)
+		from feed
+		<if test="search != null and search != ''">
+			where content like concat('%', #{search}, '%')
+		</if>
+	</select>
 
-<!-- 포텐스 총 개수 -->
-<select id="getAllPawtens" parameterType="mul.cam.a.feed.dto.FeedParam" resultType="Integer">
-	select ifnull(count(*), 0)
-	from feed
-	<if test="search != null and search != ''">
-		where content like concat('%', #{search}, '%')
-	</if>
-</select>
+	<!-- 포텐스 작성 -->
+	<insert id="pawtensWrite" parameterType="mul.cam.a.pawtens.dto.PawtensDto">
+		insert into pawtens(id, content, filename, realpathfile, date_created, date_updated)
+		values(#{id}, #{content}, #{filename}, #{realpathfile}, now(), now())
+	</insert>
 
 </mapper>

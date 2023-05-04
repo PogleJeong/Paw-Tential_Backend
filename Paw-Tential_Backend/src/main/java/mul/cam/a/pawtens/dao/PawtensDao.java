@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import mul.cam.a.feed.dto.FeedDto;
 import mul.cam.a.feed.dto.FeedParam;
+import mul.cam.a.pawtens.dto.PawtensDto;
 
 @Mapper
 @Repository
@@ -16,4 +17,5 @@ public interface PawtensDao {
 	
 	int getAllPawtens(FeedParam param);
 	
+	int pawtensWrite(PawtensDto dto);
 }
