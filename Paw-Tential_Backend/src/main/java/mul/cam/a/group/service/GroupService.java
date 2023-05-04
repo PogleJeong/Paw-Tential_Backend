@@ -27,6 +27,11 @@ public class GroupService {
 		return dao.hasJoinedGroup(id);
 	}
 	
+	// 특정 그룹 멤버수 가져오기
+	public int getGroupMember(String grpName) {
+		return dao.getGroupMember(grpName);
+	}
+	
 	// 특정 그룹에 가입된 상태인지 확인
 	public int isMember(MemberGroupDTO dto) {
 		return dao.isMember(dto);
