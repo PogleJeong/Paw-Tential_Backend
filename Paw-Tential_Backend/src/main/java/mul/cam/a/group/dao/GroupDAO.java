@@ -20,6 +20,8 @@ public interface GroupDAO {
 	// 특정 회원의 그룹 가입 존재 여부 확인
 	int hasJoinedGroup(String id);
 	
+	// 특정 그룹 멤버수 가져오기
+	int getGroupMember(String grpName);
 	
 	// 특정 그룹에 가입된 상태인지 확인
 	int isMember(MemberGroupDTO dto);

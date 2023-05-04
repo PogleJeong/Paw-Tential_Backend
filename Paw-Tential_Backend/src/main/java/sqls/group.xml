@@ -11,6 +11,13 @@ FROM MEMBER_GROUP
 WHERE MEMBER_ID = #{memberId} AND STATUS = 1
 </select>
 
+<!-- 특정 그룹 멤버 수 가져오기 -->
+<select id="getGroupMember" parameterType="String" resultType="Integer">
+SELECT COUNT(GROUP_ID)
+FROM MEMBER_GROUP
+WHERE LOWER(GROUP_NAME) = LOWER(#{grpName}) AND STATUS = 1
+</select>
+
 <!-- 특정 그룹에 방문 했을 때, 가입된 그룹인지 확인 -->
 <select id="isMember" parameterType="mul.cam.a.group.dto.MemberGroupDTO" resultType="Integer" >
 SELECT COUNT(*)
@@ -296,7 +303,7 @@ VALUES(${grpNo},
 				#{careGrpEndDt},
 				#{careGrpStartTime},
 				#{careGrpEndTime},
-				IF(#{careGrpType} = 'walk', #{careGrpCheck}, NULL),
+				IF(#{careGrpType} = 'walk', #{careGrpCheck}, 'Unknown'),
 				#{careGrpContent},
 				#{careGrpFeedSetting},
 				#{careGrpFeedWriter}
@@ -306,7 +313,13 @@ VALUES(${grpNo},
 <!-- 돌봄 그룹 피드 수정 -->
 <update id="modifyCareFeed" parameterType="mul.cam.a.group.dto.CareGroupFeedDTO">
 UPDATE CARE_GRP
-SET CARE_GRP_STARTDT = #{careGrpStartDt}, CARE_GRP_ENDDT = #{careGrpEndDt}, CARE_GRP_STARTTIME = #{careGrpStartTime}, CARE_GRP_ENDTIME = #{careGrpEndTime}, CARE_GRP_CHECK = #{careGrpCheck}, CARE_GRP_CONTENT = #{careGrpContent}, CARE_GRP_FEED_SETTING = #{careGrpFeedSetting}
+SET CARE_GRP_STARTDT = #{careGrpStartDt},
+		CARE_GRP_ENDDT = #{careGrpEndDt},
+		CARE_GRP_STARTTIME = #{careGrpStartTime},
+		CARE_GRP_ENDTIME = #{careGrpEndTime},
+		CARE_GRP_CHECK = COALESCE(#{careGrpCheck}, 'Unknown'),
+		CARE_GRP_CONTENT = #{careGrpContent},
+		CARE_GRP_FEED_SETTING = #{careGrpFeedSetting}
 WHERE CARE_GRP_FEED_NO = ${careGrpFeedNo}
 </update>
 

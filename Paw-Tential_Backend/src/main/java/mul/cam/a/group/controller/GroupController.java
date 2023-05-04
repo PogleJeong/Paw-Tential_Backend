@@ -36,6 +36,13 @@ public class GroupController {
 		return service.hasJoinedGroup(memberId) > 0 ? true : false;
 	}
 	
+	// 특정 그룹 회원 수 가져오기
+	@GetMapping("/group/getGroupMember")
+	public int getGroupMember(String grpName) {
+		System.out.println(grpName);
+		return service.getGroupMember(grpName);
+	}
+	
 	// 뉴스피드
 	@GetMapping("/group/newsFeed")
 	public Map<String, Object> newsFeed(String memberId) {
