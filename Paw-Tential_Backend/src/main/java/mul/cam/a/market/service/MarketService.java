@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.market.dao.MarketDao;
 import mul.cam.a.market.dto.MarketDto;
+import mul.cam.a.market.dto.MarketReportDto;
 
 @Service
 @Transactional
@@ -17,19 +18,21 @@ public class MarketService {
 	@Autowired
 	MarketDao dao;
 	
-	public MarketDto[] searchMarket(String selectedOption, String searchWord,  int page) {
+	public MarketDto[] searchMarket(String selectedOption, String searchWord, int pages) {
 		System.out.println("searchMarket service : " + new Date());
 		System.out.println("selected options : " + selectedOption);
+		System.out.println("search word : " + searchWord);
+		System.out.println("pages : " + pages);
 		HashMap<String, Object> searchInfo = new HashMap<>();
 		searchInfo.put("selectedOption", selectedOption);
 		searchInfo.put("searchWord", searchWord);
-		searchInfo.put("page", page);
+		searchInfo.put("pages", pages);
 		
 		return dao.searchMarket(searchInfo);
 	}
 	
-	public MarketDto[] printAllMarketSearch() {
-		return dao.printAllMarketList();
+	public MarketDto[] printAllMarketSearch(int pages) {
+		return dao.printAllMarketList(pages);
 	}
 	
 	// 게시물작성
@@ -98,6 +101,11 @@ public class MarketService {
 	// 좋아요클릭시 좋아요 개수 불러오기
 	public int marketNumberofLike(int posting) {
 		return dao.marketNumberOfLike(posting);
+	}
+	
+	// 마켓 게시물 신고하기
+	public String reportMarket(MarketReportDto reportInfo) {
+		return dao.reportMarket(reportInfo) > 0 ? "REPORT_MARKET_OK" : "REPORT_MARKET_NO";
 	}
 }
 

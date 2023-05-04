@@ -12,11 +12,17 @@ import mul.cam.a.member.dto.MemberDto;
 @Repository
 public interface MemberDao {
 	int idCheck(String id);
+	int emailCheck(String email);
 	int nicknameCheck(String nickname);
+	String getNickname(String id);
 	
 	MemberDto login(MemberDto member);
 	int addMember(MemberDto member);
+	int addMemberByKakao(HashMap<String, Object> kakaoInfo);
+	int addMemberByNaver(HashMap<String, Object> naverInfo);
+	
 	String findId(HashMap<String, Object> emailAndPhone);
+	String findIdByEmail(String email);
 	int resetPassword(MemberDto member);
 	
 	MemberDto idAndEmailCheck(HashMap<String, Object> idAndEmail);

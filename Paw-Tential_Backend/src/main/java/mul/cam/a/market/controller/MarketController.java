@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import mul.cam.a.market.dto.MarketDto;
+import mul.cam.a.market.dto.MarketReportDto;
 import mul.cam.a.market.service.MarketService;
 import mul.cam.a.util.FileUtil;
 
@@ -32,10 +33,12 @@ public class MarketController {
 	MarketService service;
 	
 	@PostMapping(value="/market")
-	public HashMap<String, Object> marketHome(HttpServletRequest req) {
+	public HashMap<String, Object> marketHome(HttpServletRequest req,
+			 int pages) {
 		System.out.println("market home Controller >> " + new Date());
+		System.out.println("pages >> " + pages);
 		
-		MarketDto[] marketInfoList = service.printAllMarketSearch();
+		MarketDto[] marketInfoList = service.printAllMarketSearch(pages);
 		List<byte[]> imageList = new ArrayList<byte[]>();
 		
 		// 마켓 리스트 가져오고 파일데이터를 처리
@@ -67,14 +70,14 @@ public class MarketController {
 	}
 	
 	@PostMapping(value="/searchMarket")
-	public HashMap<String, Object> searchMarket(String selectedOption, String searchWord, int page,
+	public HashMap<String, Object> searchMarket(String selectedOption, String searchWord, int pages,
 			HttpServletRequest req) {
 		System.out.println("market search Controller >> " + new Date());
 		System.out.println("selectedOption >> " + selectedOption);
 		System.out.println("searchword >> " + searchWord);
 		// selectedOption : 전체/제목/내용...
 		
-		MarketDto[] marketInfoList = service.searchMarket(selectedOption, searchWord, page);
+		MarketDto[] marketInfoList = service.searchMarket(selectedOption, searchWord, pages);
 		List<byte[]> imageList = new ArrayList<byte[]>();
 		
 		// 마켓 리스트 가져오고 파일데이터를 처리
@@ -190,6 +193,12 @@ public class MarketController {
 			return "MARKET_DELETE_NO";
 		}
 		return "MARKET_DELETE_OK";
+	}
+	
+	@PostMapping(value="/market/report")
+	public String reportMarket(MarketReportDto reportInfo) {
+		System.out.println("market report controller >> " + new Date());
+		return service.reportMarket(reportInfo);
 	}
 	
 	// 이상하게 2번호출됨.
