@@ -4,12 +4,20 @@
 
 <mapper namespace="mul.cam.a.myfeed.dao.MyfeedDao">
 
+<!-- 유저 정보 가져오기 -->
 <select id="userInfo" parameterType="String" resultType="mul.cam.a.member.dto.MemberDto">
 SELECT *
 FROM Member
 where id=#{id}
 </select>
 
+	<!-- 나의 피드 정보 불러오기 -->
+	<select id="getMyFeed" parameterType="String" resultType="mul.cam.a.feed.dto.FeedDto">
+		SELECT *
+		FROM feed
+		WHERE id = #{id}
+		ORDER BY date_created desc
+	</select>
 
 	
 
