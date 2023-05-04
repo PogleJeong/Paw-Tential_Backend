@@ -16,4 +16,5 @@
     values (#{feed_seq},#{id})
   </insert>
 
+
 </mapper>

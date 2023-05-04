@@ -28,12 +28,4 @@
 
 
 
-
-	<!-- 
-  <insert id="addFavorites" parameterType="mul.cam.a.favorites.dto.FavoritesDto">
-    insert into  favorites(seq, feed_seq, id)
-    VALUES (#{seq},#{feed_seq},#{id})
-  </insert>
- 	 -->
-
 </mapper>
