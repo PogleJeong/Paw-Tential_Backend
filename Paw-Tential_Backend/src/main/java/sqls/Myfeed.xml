@@ -19,6 +19,85 @@ where id=#{id}
 		ORDER BY date_created desc
 	</select>
 
+		<!-- 팔로워 수 -->
+	<select id="getFollower" parameterType="String" resultType="Integer">
+	SELECT COUNT(*) AS follower_count
+	FROM Follow
+	WHERE following_id = #{following_id};
+	</select>
 	
+			<!-- 팔로잉 수 -->
+	<select id="getFollowing" parameterType="String" resultType="Integer">
+		SELECT COUNT(*) AS following_count
+		FROM Follow
+		WHERE follower_id = #{follower_id};
+		
+	</select>
+	
+	 <!-- 특정 유저를 팔로우하는 경우 -->
+	<insert id="follow" parameterType="mul.cam.a.myfeed.dto.FollowDto">
+  	INSERT INTO Follow (follower_id, following_id)
+ 	 VALUES (#{follower_id}, #{following_id})
+	</insert>
+	
+	
+	<!-- 특정 유저의 팔로워 리스트 조회  -->
+	<select id="followerList" parameterType="String" resultType="String">
+SELECT follower_id
+FROM Follow
+WHERE following_id = #{following_id};
+	</select>
+	
+		<!-- 특정 유저의 팔로잉 리스트 조회  -->
+	<select id="followingList" parameterType="String" resultType="String">
+	SELECT following_id
+	FROM Follow
+		<if test="choice != null and choice != '' and search != null and search != '' ">
+	 	<if test="choice == 'following_id'">
+	 	WHERE following_id LIKE concat('%', #{search}, '%') 
+	 	</if>
+	 </if>
+	WHERE follower_id = #{follower_id};
+	</select>
+	
+	<!-- 팔로잉 체크 -->
+	<select id="isFollowing" parameterType="String" resultType="Integer">
+	SELECT COUNT(*) AS count
+	FROM Follow
+	WHERE follower_id = #{follower_id}
+	AND following_id = #{following_id}
+	
+	</select>
+	
+	<!-- 유저 검색 -->
+	<select id="searchMember" parameterType="mul.cam.a.admin.dto.PageParam" resultType="mul.cam.a.member.dto.MemberDto">
+	select id, pwd, email, nickname, phone, birth, gender, profile, intro, petHave, status, regiDate, groupId, groupStatus, auth
+	from
+			(select row_number()over(order by regidate desc) as rnum,
+			 id, pwd, email, nickname, phone, birth, gender, profile, intro, petHave, status, regiDate, groupId, groupStatus, auth
+	from MEMBER
+	where 1=1 
+		 <if test="choice != null and choice != '' and search != null and search != '' ">
+		 	<if test="choice == 'id'">
+		 		and id like concat('%', #{search}, '%')
+		 	</if>
+
+		 </if>		 
+		 order by regidate desc ) a
+	where rnum between ${start} and ${end}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+		<update id="editMember" parameterType="mul.cam.a.member.dto.MemberDto">
+		  UPDATE Member
+  		SET
+    pwd = #{pwd},
+    email = #{email},
+    nickname = #{nickname},
+    phone = #{phone},
+    profile = #{profile},
+    intro = #{intro}
+  WHERE id = #{id}
+		</update>
 
 </mapper>

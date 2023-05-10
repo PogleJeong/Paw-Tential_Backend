@@ -1,7 +1,6 @@
 package mul.cam.a.comment.dao;
 
 import mul.cam.a.comment.dto.CommentDto;
-import mul.cam.a.follow.dto.FollowDto;
 
 import java.util.List;
 
