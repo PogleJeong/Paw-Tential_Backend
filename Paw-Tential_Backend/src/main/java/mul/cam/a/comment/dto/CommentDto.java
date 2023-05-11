@@ -1,76 +1,93 @@
 package mul.cam.a.comment.dto;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class CommentDto {
-  private int seq;
-  private int feed_seq;
-  private  String id;
-  private  String comment;
-  private LocalDateTime date_created;
-  private LocalDateTime date_updated;
 
-  public CommentDto() {
-    super();
-  }
+	private int seq, feedSeq;
+	private String id, comment, profile;
+	@DateTimeFormat(pattern = "yy-MM-dd hh:mm")
+	private Date dateCreated, dateUpdated;
 
-  @Override
-  public String toString() {
-    return "CommentDto{" +
-        "seq=" + seq +
-        ", feed_seq=" + feed_seq +
-        ", id='" + id + '\'' +
-        ", comment='" + comment + '\'' +
-        ", date_created=" + date_created +
-        ", date_updated=" + date_updated +
-        '}';
-  }
+	public CommentDto() {
+		// TODO Auto-generated constructor stub
+	}
 
-  public int getSeq() {
-    return seq;
-  }
+	public CommentDto(int seq, int feedSeq, String id, String comment, String profile, Date dateCreated,
+			Date dateUpdated) {
+		super();
+		this.seq = seq;
+		this.feedSeq = feedSeq;
+		this.id = id;
+		this.comment = comment;
+		this.profile = profile;
+		this.dateCreated = dateCreated;
+		this.dateUpdated = dateUpdated;
+	}
 
-  public void setSeq(int seq) {
-    this.seq = seq;
-  }
+	public int getSeq() {
+		return seq;
+	}
 
-  public int getFeed_seq() {
-    return feed_seq;
-  }
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
 
-  public void setFeed_seq(int feed_seq) {
-    this.feed_seq = feed_seq;
-  }
+	public int getFeedSeq() {
+		return feedSeq;
+	}
 
-  public String getId() {
-    return id;
-  }
+	public void setFeedSeq(int feedSeq) {
+		this.feedSeq = feedSeq;
+	}
 
-  public void setId(String id) {
-    this.id = id;
-  }
+	public String getId() {
+		return id;
+	}
 
-  public String getComment() {
-    return comment;
-  }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-  public void setComment(String comment) {
-    this.comment = comment;
-  }
+	public String getComment() {
+		return comment;
+	}
 
-  public LocalDateTime getDate_created() {
-    return date_created;
-  }
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
-  public void setDate_created(LocalDateTime date_created) {
-    this.date_created = date_created;
-  }
+	public String getProfile() {
+		return profile;
+	}
 
-  public LocalDateTime getDate_updated() {
-    return date_updated;
-  }
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
 
-  public void setDate_updated(LocalDateTime date_updated) {
-    this.date_updated = date_updated;
-  }
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
+
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
+	}
+
+	@Override
+	public String toString() {
+		return "CommentDto [seq=" + seq + ", feedSeq=" + feedSeq + ", id=" + id + ", comment=" + comment + ", profile="
+				+ profile + ", dateCreated=" + dateCreated + ", dateUpdated=" + dateUpdated + "]";
+	}
+	
+
 }

@@ -2,19 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="Comment">
-<!-- comment불러오기 -->
-  <select id="getAllComment" parameterType="int" resultType="mul.cam.a.comment.dto.CommentDto">
-    select *
-    from comment
-  </select>
+<mapper namespace="mul.cam.a.comment.dao.CommentDAO">
 
-  <!-- comment저장 -->
-<insert id="addComment" parameterType="mul.cam.a.comment.dto.CommentDto">
-   insert into  comment(seq, feed_seq, id, comment, date_created, date_updated)
-    values  (#{seq},#{feed_seq},#{id},#{comment},#{date_created},#{date_updated} )
+	<!-- 특정 피드의 댓글 가져오기 -->
+	<select id="getCommentList" parameterType="Integer" resultType="mul.cam.a.comment.dto.CommentDto">
+		SELECT C.*, M.PROFILE
+		FROM COMMENT C, MEMBER M
+		WHERE M.ID = C.ID AND C.FEED_SEQ = ${feedSeq}
+	</select>
 
-</insert>
-
+	<!-- 특정 피드에 댓글 작성하기 -->
+	<insert id="writeComment" parameterType="mul.cam.a.comment.dto.CommentDto">
+		INSERT INTO COMMENT(FEED_SEQ, ID, COMMENT)
+		VALUES(${feedSeq}, #{id}, #{comment})
+	</insert>
+	
+	<!-- 특정 피드의 댓글 수정하기 -->
+	<update id="modifyComment" parameterType="mul.cam.a.comment.dto.CommentDto">
+		UPDATE COMMENT
+		SET COMMENT = #{comment}
+		WHERE SEQ = ${seq}
+	</update>
+	
+	<!-- 특정 피드의 댓글 삭제하기 -->
+	<delete id="deleteComment" parameterType="Integer">
+		DELETE
+		FROM COMMENT
+		WHERE SEQ = ${seq}
+	</delete>
 
 </mapper>
