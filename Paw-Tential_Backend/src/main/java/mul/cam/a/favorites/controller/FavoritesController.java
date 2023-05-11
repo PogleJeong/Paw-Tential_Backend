@@ -16,30 +16,20 @@ import java.util.List;
 public class FavoritesController {
 
   @Autowired
-  private FavoritesService service;
-
-  //좋아요 불러오기
-  @GetMapping("/Favorites")
-  public List<FavoritesDto> mainFeed(){
-    System.out.println("mainFeed baseLayout" + new Date());
-    List<FavoritesDto> favorites = service.favorites();
-
-    return favorites;
+  FavoritesService service;
+  
+  // 좋아요 로직
+  @GetMapping("/home/like")
+  public String like(FavoritesDto dto) {
+	  System.out.println(dto.toString());
+	  // 좋아요 클릭한적 있는지 조사 후,  이력이 없으면 반영하고 이력이 있으면 취소
+	  int count = service.hasLiked(dto);
+	  // 이력이 없으면 반영
+	  if(count == 0) {
+		  return service.like(dto) > 0 ? "좋아요가 반영되었습니다." : "좋아요 반영에 실패하였습니다.";
+	  } else {
+		  return service.unLike(dto) > 0 ? "좋아요가 취소되었습니다." : "좋아요 취소에 실패하였습니다.";
+	  }
   }
   
-  //좋아요 저장
-  @PostMapping("/Favorites")
-  public Integer addFavorites(@RequestBody FavoritesDto favoritesDto){
-    System.out.println("FavoritesController baseLayout" + new Date() + favoritesDto);
-    service.addFavorites(favoritesDto);
-    return favoritesDto.getSeq();
-  }
-
-  //좋아요 취소
-  @DeleteMapping("/{seq}/Favorites")
-  public void deleteFavorites(@PathVariable Integer seq){
-    System.out.println("FavoritesController delete baseLayout" + new Date() + seq);
-    service.deleteFavorites(seq);
-
-  }
 }

@@ -11,23 +11,20 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface FeedDao {
-
-	List<Map<String, Object>> getAllFeed();
-   
-	List<FeedDto> getAllFeedByUserId(String userId);
-
-	//로그인시,팔로우피드 보이기
-	List<FeedDto> getFollowToUsersFeed(String id);
-   
-	// 피드 작성하기
+	
+	// 메인 - 모든 피드 불러오기
+	List<FeedDto> getAllFeed();
+	
+	// 메인 - 특정 피드 원본 불러오기
+	FeedDto loadPost(int seq);
+	
+	// 메인 - 피드 작성하기
 	int feedWrite(FeedDto dto);
-   
-	// 특정 피드 정보 불러오기
-	FeedDto getFeedInfo(int seq);
-   
-	// 피드 수정하기
-	int feedUpdate(FeedDto dto);
-   
-	// 피드 삭제하기
+	
+	// 메인 - 특정 피드 수정하기
+	int feedModify(FeedDto dto);
+	
+	// 메인 - 특정 피드 삭제하기
 	int feedDelete(int seq);
+	
 }

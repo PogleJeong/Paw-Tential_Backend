@@ -14,6 +14,7 @@ import mul.cam.a.group.dto.GroupFeedDTO;
 import mul.cam.a.group.dto.GroupFeedLikeDTO;
 import mul.cam.a.group.dto.GroupSearchParam;
 import mul.cam.a.group.dto.MemberGroupDTO;
+import mul.cam.a.member.dto.MemberDto;
 
 @Service
 @Transactional
@@ -30,6 +31,16 @@ public class GroupService {
 	// 특정 그룹 멤버수 가져오기
 	public int getGroupMember(String grpName) {
 		return dao.getGroupMember(grpName);
+	}
+	
+	// 로그인 한 유저의 프로필 사진 가져오기
+	public String getProfileImage(String id) {
+		return dao.getProfileImage(id);
+	}
+	
+	// 특정 그룹에 가입한 사람 프로필 가져오기
+	public List<MemberDto> getGroupMemberImg(int groupId) {
+		return dao.getGroupMemberImg(groupId);
 	}
 	
 	// 특정 그룹에 가입된 상태인지 확인
@@ -66,6 +77,11 @@ public class GroupService {
 	// 그룹 생성 시, MEMBER_GROUP 테이블에도 데이터 추가
 	public int addMemberGroup(MemberGroupDTO dto) {
 		return dao.addMemberGroup(dto);
+	}
+	
+	// 공식 그룹 가져오기
+	public GroupDTO getOfficialGroup(String memberId) {
+		return dao.getOfficialGroup(memberId);
 	}
 	
 	// 그룹 리스트 및 검색 리스트
@@ -139,6 +155,11 @@ public class GroupService {
 	// 특정 그룹 피드 작성하기
 	public int createFeed(GroupFeedDTO dto) {
 		return dao.createFeed(dto);
+	}
+	
+	// 특정 피드에 좋아요 클릭한 인원
+	public List<GroupFeedLikeDTO> likesMember(int grpFeedNo) {
+		return dao.likesMember(grpFeedNo);
 	}
 	
 	// 특정 피드 정보 불러오기

@@ -27,32 +27,57 @@ WHERE MEMBER_ID = #{memberId} AND GROUP_ID = ${groupId} AND STATUS = 1
 
 <!-- 특정 그룹의 전체 공개인 피드만 가져오기(가입 안 되어 있을 때) -->
 <select id="getGroupFeed" parameterType="Integer" resultType="mul.cam.a.group.dto.GroupFeedDTO">
-SELECT F.GRP_FEED_NO, F.GRP_FEED_CONTENT, F.GRP_FEED_WD, F.GRP_FEED_SETTING, F.GRP_FEED_ID, COUNT(L.GRP_FEED_NO) AS GRP_FEED_LIKE_COUNT
-FROM GRP_FEED F
+SELECT F.GRP_FEED_NO,
+			F.GRP_FEED_CONTENT,
+            F.GRP_FEED_WD,
+            F.GRP_FEED_SETTING,
+            F.GRP_FEED_ID,
+            M.PROFILE,
+            COUNT(C.GRP_FEED_NO) AS GRP_COMMENT_COUNT,
+            COUNT(L.GRP_FEED_NO) AS GRP_FEED_LIKE_COUNT
+FROM GRP_FEED F INNER JOIN MEMBER M ON F.GRP_FEED_ID = M.ID
 LEFT JOIN GRP_FEED_LIKE L ON F.GRP_FEED_NO = L.GRP_FEED_NO
+LEFT JOIN GRP_COMMENT C ON F.GRP_FEED_NO = C.GRP_FEED_NO 
 WHERE F.GRP_NO = ${grpNo} AND F.GRP_FEED_SETTING = '전체 공개'
-GROUP BY F.GRP_FEED_NO, F.GRP_FEED_CONTENT, F.GRP_FEED_WD, F.GRP_FEED_SETTING, F.GRP_FEED_ID
+GROUP BY F.GRP_FEED_NO, F.GRP_FEED_CONTENT, F.GRP_FEED_WD, F.GRP_FEED_SETTING, F.GRP_FEED_ID, M.PROFILE
 ORDER BY F.GRP_FEED_WD DESC
+</select>
+
+<!-- 특정 피드에 좋아요 클릭한 인원 -->
+<select id="likesMember" parameterType="Integer" resultType="mul.cam.a.group.dto.GroupFeedLikeDTO">
+SELECT GRP_FEED_LIKE_ID
+FROM GRP_FEED_LIKE
+WHERE GRP_FEED_NO = ${grpFeedNo}
 </select>
 
 <!-- 특정 그룹의 피드 가져오기 -->
 <select id="getGroupAllFeed" parameterType="Integer" resultType="mul.cam.a.group.dto.GroupFeedDTO">
-SELECT F.GRP_FEED_NO, F.GRP_FEED_CONTENT, F.GRP_FEED_WD, F.GRP_FEED_SETTING, F.GRP_FEED_ID, COUNT(L.GRP_FEED_NO) AS GRP_FEED_LIKE_COUNT
-FROM GRP_FEED F
+SELECT F.GRP_FEED_NO,
+			F.GRP_FEED_CONTENT,
+            F.GRP_FEED_WD,
+            F.GRP_FEED_SETTING,
+            F.GRP_FEED_ID,
+            M.PROFILE,
+            COUNT(C.GRP_FEED_NO) AS GRP_COMMENT_COUNT,
+            COUNT(L.GRP_FEED_NO) AS GRP_FEED_LIKE_COUNT
+FROM GRP_FEED F INNER JOIN MEMBER M ON F.GRP_FEED_ID = M.ID
 LEFT JOIN GRP_FEED_LIKE L ON F.GRP_FEED_NO = L.GRP_FEED_NO
+LEFT JOIN GRP_COMMENT C ON F.GRP_FEED_NO = C.GRP_FEED_NO 
 WHERE F.GRP_NO = ${grpNo}
-GROUP BY F.GRP_FEED_NO, F.GRP_FEED_CONTENT, F.GRP_FEED_WD, F.GRP_FEED_SETTING, F.GRP_FEED_ID
+GROUP BY F.GRP_FEED_NO, F.GRP_FEED_CONTENT, F.GRP_FEED_WD, F.GRP_FEED_SETTING, F.GRP_FEED_ID, M.PROFILE
 ORDER BY F.GRP_FEED_WD DESC
 </select>
 
 <!-- 특정 회원이 가입한 그룹의 피드를 최신순으로 가져오기 -->
 <select id="getMemberGroupsFeeds" parameterType="String" resultType="mul.cam.a.group.dto.GroupFeedDTO">
-SELECT G.GRP_NAME, GF.GRP_FEED_NO, GF.GRP_FEED_CONTENT, GF.GRP_FEED_WD, GF.GRP_FEED_SETTING, GF.GRP_FEED_ID
-FROM GRP_FEED GF, GRP G
-WHERE GF.GRP_NO = G.GRP_NO AND GF.GRP_NO IN (SELECT GROUP_ID
-																								FROM MEMBER_GROUP
-																								WHERE MEMBER_ID  = #{memberId} AND STATUS = 1)
-ORDER BY GRP_FEED_WD DESC
+SELECT G.GRP_NO, G.GRP_NAME, G.GRP_IMAGE, GF.GRP_FEED_NO, GF.GRP_FEED_CONTENT, GF.GRP_FEED_WD, GF.GRP_FEED_SETTING, GF.GRP_FEED_ID, COUNT(GFL.GRP_FEED_NO) AS GRP_FEED_LIKE_COUNT, COUNT(GC.GRP_FEED_NO) AS GRP_COMMENT_COUNT
+FROM GRP G INNER JOIN GRP_FEED GF ON G.GRP_NO = GF.GRP_NO
+			LEFT OUTER JOIN GRP_FEED_LIKE GFL ON GF.GRP_FEED_NO = GFL.GRP_FEED_NO
+			LEFT OUTER JOIN GRP_COMMENT GC ON GF.GRP_FEED_NO = GC.GRP_FEED_NO
+			INNER JOIN MEMBER_GROUP MG ON G.GRP_NO = MG.GROUP_ID
+WHERE MG.MEMBER_ID = #{memberId} AND MG.STATUS = 1
+GROUP BY G.GRP_NO, G.GRP_NAME, G.GRP_IMAGE, GF.GRP_FEED_NO, GF.GRP_FEED_CONTENT, GF.GRP_FEED_WD, GF.GRP_FEED_SETTING, GF.GRP_FEED_ID
+ORDER BY GF.GRP_FEED_WD DESC
 </select>
 
 <!-- 그룹 생성 -->
@@ -73,6 +98,19 @@ WHERE LOWER(GRP_NAME) = LOWER(#{grpName})
 INSERT INTO MEMBER_GROUP
 VALUES(#{memberId}, ${groupId}, #{groupName}, 1)
 </insert>
+
+<!-- 공식 그룹 가져오기 -->
+<select id="getOfficialGroup" parameterType="String" resultType="mul.cam.a.group.dto.GroupDTO">
+SELECT G.GRP_NO, G.GRP_NAME, G.GRP_IMAGE, G.GRP_MEMBER, G.GRP_VISIT, (SELECT STATUS
+																																					FROM MEMBER_GROUP
+																																					WHERE MEMBER_ID = #{memberId}
+																																					AND GROUP_ID = G.GRP_NO) AS GRP_STATUS, COUNT(F.GRP_NO) AS GRP_POST, G.GRP_ISOFFICIAL
+FROM GRP G
+LEFT OUTER JOIN MEMBER_GROUP M ON G.GRP_NO = M.GROUP_ID
+LEFT OUTER JOIN GRP_FEED F ON G.GRP_NO = F.GRP_NO
+WHERE G.GRP_ISOFFICIAL = 1 	
+GROUP BY G.GRP_NO, G.GRP_NAME, G.GRP_IMAGE, G.GRP_MEMBER, G.GRP_VISIT
+</select>
 
 <!-- 그룹 리스트 -->
 <select id="getGroupList" parameterType="mul.cam.a.group.dto.GroupSearchParam" resultType="mul.cam.a.group.dto.GroupDTO">
@@ -126,6 +164,22 @@ FROM GRP
 WHERE GRP_NO = ${grpNo}
 </select>
 
+<!-- 로그인 한 유저의 프로필 사진 가져오기  -->
+<select id="getProfileImage" parameterType="String" resultType="String">
+SELECT PROFILE
+FROM MEMBER
+WHERE ID = #{id}
+</select>
+
+<!-- 특정 그룹에 가입한 사람 프로필 가져오기 -->
+<select id="getGroupMemberImg" parameterType="Integer" resultType="mul.cam.a.member.dto.MemberDto">
+SELECT M.PROFILE
+FROM MEMBER_GROUP MG, MEMBER M
+WHERE MG.MEMBER_ID = M.ID
+	AND MG.GROUP_ID = ${groupId}
+	AND MG.STATUS = 1
+</select>
+
 <!-- 특정 그룹의 리더 -->
 <select id="getGroupLeader" parameterType="Integer" resultType="String">
 SELECT GRP_LEADER
@@ -135,9 +189,9 @@ WHERE GRP_NO = ${grpNo}
 
 <!-- 특정 그룹에 가입한 인원 가져오기 -->
 <select id="getGroupJoinRequest" parameterType="Integer" resultType="mul.cam.a.group.dto.MemberGroupDTO">
-SELECT MEMBER_ID
-FROM MEMBER_GROUP
-WHERE GROUP_ID = ${groupId} AND STATUS = 2
+SELECT MG.MEMBER_ID, M.PROFILE
+FROM MEMBER_GROUP MG, MEMBER M
+WHERE MG.MEMBER_ID = M.ID AND MG.GROUP_ID = ${groupId} AND MG.STATUS = 2
 </select>
 
 <!-- 그룹 가입 승인 -->
@@ -236,9 +290,9 @@ WHERE GRP_FEED_NO = ${grpFeedNo} AND GRP_FEED_LIKE_ID = #{grpFeedLikeId}
 
 <!-- 댓글 리스트 가져오기 -->
 <select id="getCommentList" parameterType="Integer" resultType="mul.cam.a.group.dto.GroupFeedCommentDTO">
-SELECT *
-FROM GRP_COMMENT
-WHERE GRP_FEED_NO = ${grpFeedNo}
+SELECT C.*, M.PROFILE
+FROM GRP_COMMENT C, MEMBER M
+WHERE M.ID = C.GRP_FEED_CMT_ID AND GRP_FEED_NO = ${grpFeedNo}
 </select>
 
 <!-- 댓글 작성하기 -->

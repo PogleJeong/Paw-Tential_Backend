@@ -1,9 +1,5 @@
 package mul.cam.a.feed.dto;
 
-import mul.cam.a.comment.dto.CommentDto;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,74 +7,30 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 //Main Feed Dto
 public class FeedDto implements Serializable {
-
-	private int seq;
-	private String id;
-	private String content;
-	private String tag;
-	private String location;
-	private String filename;
-	private String realpathfile;
+	
+	private String id, content, location, profile;
+	private int seq, favoriteCount, commentCount, bookmarkCount;
 	@DateTimeFormat(pattern = "yy-MM-dd hh:mm")
-	private Date date_created;
-	private Date date_updated;
-
-	private int favoriteSeq;
-
-	private Integer favoriteCount;
+	private Date dateCreated, dateUpdated;
 	
 	public FeedDto() {
+		// TODO Auto-generated constructor stub
 	}
 
-	public FeedDto(int seq, String id, String content, String tag, String location) {
+	public FeedDto(String id, String content, String location, String profile, int seq, int favoriteCount,
+			int commentCount, int bookmarkCount, Date dateCreated, Date dateUpdated) {
 		super();
-		this.seq = seq;
 		this.id = id;
 		this.content = content;
-		this.tag = tag;
 		this.location = location;
-	}
-
-	public FeedDto(int seq, String id, String content, String tag, String location, String filename,
-			String realpathfile, Date date_created, Date date_updated) {
-		super();
+		this.profile = profile;
 		this.seq = seq;
-		this.id = id;
-		this.content = content;
-		this.tag = tag;
-		this.location = location;
-		this.filename = filename;
-		this.realpathfile = realpathfile;
-		this.date_created = date_created;
-		this.date_updated = date_updated;
+		this.favoriteCount = favoriteCount;
+		this.commentCount = commentCount;
+		this.bookmarkCount = bookmarkCount;
+		this.dateCreated = dateCreated;
+		this.dateUpdated = dateUpdated;
 	}
-
-	public int getSeq() {
-		return seq;
-	}
-
-	public void setSeq(int seq) {
-		this.seq = seq;
-	}
-
-	public List<CommentDto> getComments() {
-		return comments;
-	}
-
-
-	public int getFavoriteSeq() {
-		return favoriteSeq;
-	}
-
-	public void setFavoriteSeq(int favoriteSeq) {
-		this.favoriteSeq = favoriteSeq;
-	}
-
-	public void setComments(List<CommentDto> comments) {
-		this.comments = comments;
-	}
-
-	private List<CommentDto> comments = new ArrayList<>();
 
 	public String getId() {
 		return id;
@@ -96,14 +48,6 @@ public class FeedDto implements Serializable {
 		this.content = content;
 	}
 
-	public String getTag() {
-		return tag;
-	}
-
-	public void setTag(String tag) {
-		this.tag = tag;
-	}
-
 	public String getLocation() {
 		return location;
 	}
@@ -112,52 +56,68 @@ public class FeedDto implements Serializable {
 		this.location = location;
 	}
 
-	public String getFilename() {
-		return filename;
+	public String getProfile() {
+		return profile;
 	}
 
-	public void setFilename(String filename) {
-		this.filename = filename;
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
 
-	public String getRealpathfile() {
-		return realpathfile;
+	public int getSeq() {
+		return seq;
 	}
 
-	public void setRealpathfile(String realpathfile) {
-		this.realpathfile = realpathfile;
+	public void setSeq(int seq) {
+		this.seq = seq;
 	}
 
-	public Date getDate_created() {
-		return date_created;
-	}
-
-	public void setDate_created(Date date_created) {
-		this.date_created = date_created;
-	}
-
-	public Date getDate_updated() {
-		return date_updated;
-	}
-
-	public void setDate_updated(Date date_updated) {
-		this.date_updated = date_updated;
-	}
-
-	public Integer getFavoriteCount() {
+	public int getFavoriteCount() {
 		return favoriteCount;
 	}
 
-	public void setFavoriteCount(Integer favoriteCount) {
+	public void setFavoriteCount(int favoriteCount) {
 		this.favoriteCount = favoriteCount;
+	}
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public int getBookmarkCount() {
+		return bookmarkCount;
+	}
+
+	public void setBookmarkCount(int bookmarkCount) {
+		this.bookmarkCount = bookmarkCount;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
+
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
 	}
 
 	@Override
 	public String toString() {
-		return "FeedDto [seq=" + seq + ", id=" + id + ", content=" + content + ", tag=" + tag + ", location=" + location
-				+ ", filename=" + filename + ", realpathfile=" + realpathfile + ", date_created=" + date_created
-				+ ", date_updated=" + date_updated + ", favoriteSeq=" + favoriteSeq + ", favoriteCount=" + favoriteCount
-				+ ", comments=" + comments + "]";
+		return "FeedDto [id=" + id + ", content=" + content + ", location=" + location + ", profile=" + profile
+				+ ", seq=" + seq + ", favoriteCount=" + favoriteCount + ", commentCount=" + commentCount
+				+ ", bookmarkCount=" + bookmarkCount + ", dateCreated=" + dateCreated + ", dateUpdated=" + dateUpdated
+				+ "]";
 	}
-
+	
 }
