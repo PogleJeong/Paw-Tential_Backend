@@ -11,6 +11,10 @@ public class WebConfigurer implements WebMvcConfigurer{
 	public void addCorsMappings(CorsRegistry registry) {		
 		System.out.println("WebConfigurer 접속 클라이언트를 허가");
 		// 접속 클라이언트를 허가
-		registry.addMapping("/**").allowedOrigins("http://localhost:9001");
+		registry.addMapping("/**")
+				.allowedOrigins("http://localhost:9001")
+					.allowedMethods("GET", "POST", "PUT", "DELETE")
+					.allowCredentials(true)
+					.allowedHeaders("*");
 	}
 }
