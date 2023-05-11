@@ -4,21 +4,22 @@ import java.io.Serializable;
 
 public class GroupDTO implements Serializable {
 	
-	private int grpNo, grpMember, grpVisit, grpPost, grpStatus;
+	private int grpNo, grpMember, grpVisit, grpPost, grpStatus, grpIsOfficial;
 	private String grpName, grpLeader, image, grpIntro, grpImage;
 	
 	public GroupDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public GroupDTO(int grpNo, int grpMember, int grpVisit, int grpPost, int grpStatus, String grpName,
-			String grpLeader, String image, String grpIntro, String grpImage) {
+	public GroupDTO(int grpNo, int grpMember, int grpVisit, int grpPost, int grpStatus, int grpIsOfficial,
+			String grpName, String grpLeader, String image, String grpIntro, String grpImage) {
 		super();
 		this.grpNo = grpNo;
 		this.grpMember = grpMember;
 		this.grpVisit = grpVisit;
 		this.grpPost = grpPost;
 		this.grpStatus = grpStatus;
+		this.grpIsOfficial = grpIsOfficial;
 		this.grpName = grpName;
 		this.grpLeader = grpLeader;
 		this.image = image;
@@ -66,6 +67,14 @@ public class GroupDTO implements Serializable {
 		this.grpStatus = grpStatus;
 	}
 
+	public int getGrpIsOfficial() {
+		return grpIsOfficial;
+	}
+
+	public void setGrpIsOfficial(int grpIsOfficial) {
+		this.grpIsOfficial = grpIsOfficial;
+	}
+
 	public String getGrpName() {
 		return grpName;
 	}
@@ -109,11 +118,9 @@ public class GroupDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "GroupDTO [grpNo=" + grpNo + ", grpMember=" + grpMember + ", grpVisit=" + grpVisit + ", grpPost="
-				+ grpPost + ", grpStatus=" + grpStatus + ", grpName=" + grpName + ", grpLeader=" + grpLeader
-				+ ", image=" + image + ", grpIntro=" + grpIntro + ", grpImage=" + grpImage + "]";
+				+ grpPost + ", grpStatus=" + grpStatus + ", grpIsOfficial=" + grpIsOfficial + ", grpName=" + grpName
+				+ ", grpLeader=" + grpLeader + ", image=" + image + ", grpIntro=" + grpIntro + ", grpImage=" + grpImage
+				+ "]";
 	}
-	
-	
-	
 	
 }

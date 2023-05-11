@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
+import mul.cam.a.group.dto.CareGroupFeedDTO;
 import mul.cam.a.group.dto.GroupDTO;
 import mul.cam.a.group.dto.GroupFeedCommentDTO;
 import mul.cam.a.group.dto.GroupFeedDTO;
 import mul.cam.a.group.dto.GroupFeedLikeDTO;
+import mul.cam.a.group.dto.GroupSearchParam;
 import mul.cam.a.group.dto.MemberGroupDTO;
 import mul.cam.a.group.service.GroupService;
 import mul.cam.a.group.util.FileUtil;
@@ -34,72 +36,96 @@ public class GroupController {
 		return service.hasJoinedGroup(memberId) > 0 ? true : false;
 	}
 	
-	// 특정 그룹의 피드 가져오기
-	@GetMapping("/group/groupFeed")
-	public Map<String, Object> getGroupFeed(int grpNo) {
-		service.addVisit(grpNo);
+	// 특정 그룹 회원 수 가져오기
+	@GetMapping("/group/getGroupMember")
+	public int getGroupMember(String grpName) {
+		System.out.println(grpName);
+		return service.getGroupMember(grpName);
+	}
+	
+	// 뉴스피드
+	@GetMapping("/group/newsFeed")
+	public Map<String, Object> newsFeed(String memberId) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("groupFeedList", service.getGroupFeed(grpNo));
-		return map;
+		map.put("newsFeed", service.getMemberGroupsFeeds(memberId));
+		return map != null ? map : null;
 	}
 	
 	
-	// 가입된 그룹들의 피드 가져오기
-	@GetMapping("/group/newsFeed")
-	public Map<String, Object> getMemberGroupsFeeds(String memberId) {
+	// 특정 그룹 방문 시 로직
+	@PostMapping("/group/isMember")
+	public Map<String, Object> isMember(MemberGroupDTO dto) {
 		
 		Map<String, Object> map = new HashMap<>();
 		
-		// 특정 회원이 가입한 그룹이 있는지 확인
-		int count = service.hasJoinedGroup(memberId);
-		if(count == 0) {
-			return null;
+		// 해당 그룹의 방문수 증가
+		service.addVisit(dto.getGroupId());
+		
+		// 해당 그룹에 가입된 상태인지 조사
+		int count = service.isMember(dto);
+		map.put("count", count);
+		
+		if(count > 0) {
+			// 해당 그룹에 가입된 상태이면 모든 피드 보여주기
+			map.put("groupAllFeed", service.getGroupAllFeed(dto.getGroupId()));
+			return map;
 		} else {
-			map.put("list", service.getMemberGroupsFeeds(memberId));
+			// 해당 그룹에 가입된 상태가 아니면 '전체 공개' 인 피드만 보여주기
+			map.put("groupFeed", service.getGroupFeed(dto.getGroupId()));
 			return map;
 		}
 	}
+	
+	// 기존에 존재하는 그룹명인지 확인
+	@GetMapping("/group/checkExistingGroup")
+	public String checkExistingGroup(String grpName) {
+		return service.checkExistingGroup(grpName) > 0 ? "NO" : "YES";
+	}
+	
 	
 	// 그룹 생성
 	@PostMapping("/group/createGroup")
 	public String createGroup(GroupDTO dto, MemberGroupDTO memberGroupDTO,
 													@RequestParam("uploadFile") MultipartFile uploadFile,
 													HttpServletRequest req) throws IOException {
-		String path = req.getServletContext().getRealPath("/upload/group");
 		
-		String fileName = uploadFile.getOriginalFilename();
-		String newFileName = FileUtil.getNewFileName(fileName);
-		dto.setImage(newFileName);
-		
-		// DB에 파일 경로 저장
-		String filePath = "../upload/group/" + newFileName;
-		System.out.println(filePath);
-		dto.setGrpImage(filePath);
-		
-		File file = new File(path + "/" + newFileName);
-		
-		FileUtils.writeByteArrayToFile(file, uploadFile.getBytes());
-		
-		int answer = service.createGroup(dto);
-		System.out.println(dto.toString());
-		
-		memberGroupDTO.setMemberId(dto.getGrpLeader());
-		memberGroupDTO.setGroupName(dto.getGrpName());
-		memberGroupDTO.setGroupId(dto.getGrpNo());
-		
-		// MEMBER_GROUP 테이블에 데이터 추가
-		service.addMemberGroup(memberGroupDTO);
-		
-		return answer > 0 ? "그룹이 생성되었습니다." : "그룹 생성에 실패하였습니다.";
+			String path = req.getServletContext().getRealPath("/upload/group");
+			
+			String fileName = uploadFile.getOriginalFilename();
+			String newFileName = FileUtil.getNewFileName(fileName);
+			dto.setImage(newFileName);
+			
+			// DB에 파일 경로 저장
+			String filePath = "../upload/group/" + newFileName;
+			System.out.println(filePath);
+			dto.setGrpImage(filePath);
+			
+			File file = new File(path + "/" + newFileName);
+			
+			FileUtils.writeByteArrayToFile(file, uploadFile.getBytes());
+			
+			int answer = service.createGroup(dto);
+			System.out.println(dto.toString());
+			
+			memberGroupDTO.setMemberId(dto.getGrpLeader());
+			memberGroupDTO.setGroupName(dto.getGrpName());
+			memberGroupDTO.setGroupId(dto.getGrpNo());
+			
+			// MEMBER_GROUP 테이블에 데이터 추가
+			service.addMemberGroup(memberGroupDTO);
+			
+			return answer > 0 ? "그룹이 생성되었습니다." : "그룹 생성에 실패하였습니다.";
 	}
 	
-	// 그룹 검색
-	@GetMapping("/group/searchGroup")
-	public Map<String, Object> searchGroup(MemberGroupDTO dto) {
+	// 그룹 리스트 및 검색 결과
+	@GetMapping("/group/getGroupList")
+	public Map<String, Object> getAllGroupList(GroupSearchParam param) {
+		System.out.println(param.toString());
 		Map<String, Object> map = new HashMap<>();
-		map.put("groupList", service.searchGroup(dto));
+		map.put("groupList", service.getGroupList(param));
 		return map;
 	}
+
 	
 	// 그룹 가입 요청
 	@PostMapping("/group/groupJoinRequest")
@@ -273,10 +299,60 @@ public class GroupController {
 		return service.writeGrpFeedCmt(dto) > 0 ? "댓글 작성이 완료되었습니다." : "댓글 등록 실패";
 	}
 	
+	// 댓글 수정하기
+	@PostMapping("/group/cmtModify")
+	public String cmtModify(GroupFeedCommentDTO dto) {
+		return service.cmtModify(dto) > 0 ? "댓글이 수정되었습니다." : "댓글 수정 실패";
+	}
+	
+	
 	// 댓글 삭제하기
 	@GetMapping("/group/cmtDelete")
 	public String cmtDelete(int grpCmtNo) {
 		return service.cmtDelete(grpCmtNo) > 0 ? "댓글이 삭제되었습니다." : "댓글 삭제 실패";
 	}
+	
+	// 댓글 내용 가져오기
+	@GetMapping("/group/getCmtContent")
+	public GroupFeedCommentDTO getCmtContent(int grpCmtNo) {
+		return service.getCmtContent(grpCmtNo);
+	}
+	
+	// 돌봄 그룹 피드 리스트
+	@GetMapping("/group/getCareGroupAllFeed")
+	public Map<String, Object> getCareGroupAllFeed(int grpNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("careGroupFeedList", service.getCareGroupAllFeed(grpNo));
+		System.out.println(map.toString());
+		return map;
+	}
+	
+	// 돌봄 그룹 특정 피드 정보
+	@GetMapping("/group/loadCarePost")
+	public CareGroupFeedDTO loadCarePost(int careGrpFeedNo) {
+		return service.loadCarePost(careGrpFeedNo);
+	}
+	
+	// 돌봄 그룹 피드 작성 처리
+	@PostMapping("/group/createCareFeed")
+	public String createCareFeed(CareGroupFeedDTO dto) {
+		System.out.println(dto.toString());
+		return service.createCareFeed(dto) > 0 ? "피드 작성 완료" : "피드 작성 실패";
+	}
+	
+	// 돌봄 그룹 피드 수정 처리
+	@PostMapping("/group/modifyCareFeed")
+	public String modifyCareFeed(CareGroupFeedDTO dto) {
+		System.out.println(dto.toString());
+		return service.modifyCareFeed(dto) > 0 ? "피드 수정 완료" : "피드 수정 실패";
+	}
+	
+	// 돌봄 그룹 피드 삭제 처리
+	@GetMapping("/group/deleteCareFeed")
+	public String deleteCareFeed(int careGrpFeedNo) {
+		System.out.println(careGrpFeedNo);
+		return service.deleteCareFeed(careGrpFeedNo) > 0 ? "피드 삭제 완료" : "피드 삭제 실패";
+	}
+	
 	
 }

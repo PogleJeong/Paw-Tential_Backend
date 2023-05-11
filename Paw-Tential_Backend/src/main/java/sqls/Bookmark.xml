@@ -4,14 +4,17 @@
 
 <mapper namespace="Bookmark">
 <!-- Bookmark불러오기 -->
-  <select id="getAllBookmark" resultType="mul.cam.a.feed.dto.FeedDto">
+
+  <select id="getAllBookmark" resultType="mul.cam.a.bookmark.dto.BookmarkDto">
     select *
     from bookmark
   </select>
 
 <!--Bookmark저장-->
-  <insert id="addBookmark" parameterType="mul.cam.a.comment.dto.CommentDto">
-    insert into bookmark(seq,feed_seq,id)
-    values (#{seq},#{feed_seq},#{id})
+  <insert id="addBookmark" parameterType="mul.cam.a.bookmark.dto.BookmarkDto">
+    insert into bookmark(feed_seq,id)
+    values (#{feed_seq},#{id})
   </insert>
+
+
 </mapper>

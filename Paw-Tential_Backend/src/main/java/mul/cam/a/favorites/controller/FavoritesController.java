@@ -3,6 +3,7 @@ package mul.cam.a.favorites.controller;
 import mul.cam.a.favorites.dto.FavoritesDto;
 import mul.cam.a.favorites.service.FavoritesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,9 +29,17 @@ public class FavoritesController {
   
   //좋아요 저장
   @PostMapping("/Favorites")
-  public void addFavorites(@RequestBody FavoritesDto favoritesDto){
-    System.out.println("FavoritesController baseLayout" + new Date());
+  public Integer addFavorites(@RequestBody FavoritesDto favoritesDto){
+    System.out.println("FavoritesController baseLayout" + new Date() + favoritesDto);
     service.addFavorites(favoritesDto);
+    return favoritesDto.getSeq();
   }
-  
+
+  //좋아요 취소
+  @DeleteMapping("/{seq}/Favorites")
+  public void deleteFavorites(@PathVariable Integer seq){
+    System.out.println("FavoritesController delete baseLayout" + new Date() + seq);
+    service.deleteFavorites(seq);
+
+  }
 }

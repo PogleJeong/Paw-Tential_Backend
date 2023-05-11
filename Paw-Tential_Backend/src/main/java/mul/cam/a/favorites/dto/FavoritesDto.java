@@ -1,13 +1,21 @@
 package mul.cam.a.favorites.dto;
 
 public class FavoritesDto {
-    private int seq;
-    private int feed_seq;
-    private String id;
+  private int seq;
+  private int feed_seq;
+  private String id;
 
-  public FavoritesDto() {
-    super();
+  private int feed_like;
+
+
+
+  public FavoritesDto(int seq, int feed_seq, String id, int feed_like) {
+    this.seq = seq;
+    this.feed_seq = feed_seq;
+    this.id = id;
+    this.feed_like = feed_like;
   }
+
 
   @Override
   public String toString() {
@@ -15,6 +23,7 @@ public class FavoritesDto {
         "seq=" + seq +
         ", feed_seq=" + feed_seq +
         ", id='" + id + '\'' +
+        ", feed_like=" + feed_like +
         '}';
   }
 
@@ -40,5 +49,13 @@ public class FavoritesDto {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public int getFeed_like() {
+    return feed_like;
+  }
+
+  public void setFeed_like(int feed_like) {
+    this.feed_like = feed_like;
   }
 }

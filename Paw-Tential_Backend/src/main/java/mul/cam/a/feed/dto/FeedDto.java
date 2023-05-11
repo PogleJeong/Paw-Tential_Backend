@@ -1,108 +1,163 @@
 package mul.cam.a.feed.dto;
 
-import java.time.LocalDateTime;
+import mul.cam.a.comment.dto.CommentDto;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.io.Serializable;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 //Main Feed Dto
-public class FeedDto {
-      private String id;
-      private String content;
-      private String tag;
-      private String location;
-      private String filename;
-      private String realpathfile;
-      private LocalDateTime date_created;
-      private LocalDateTime date_updated;
+public class FeedDto implements Serializable {
 
-  public String getId() {
-    return id;
-  }
+	private int seq;
+	private String id;
+	private String content;
+	private String tag;
+	private String location;
+	private String filename;
+	private String realpathfile;
+	@DateTimeFormat(pattern = "yy-MM-dd hh:mm")
+	private Date date_created;
+	private Date date_updated;
 
-  public void setId(String id) {
-    this.id = id;
-  }
+	private int favoriteSeq;
 
-  public String getContent() {
-    return content;
-  }
+	private Integer favoriteCount;
+	
+	public FeedDto() {
+	}
 
-  public void setContent(String content) {
-    this.content = content;
-  }
+	public FeedDto(int seq, String id, String content, String tag, String location) {
+		super();
+		this.seq = seq;
+		this.id = id;
+		this.content = content;
+		this.tag = tag;
+		this.location = location;
+	}
 
-  public String getTag() {
-    return tag;
-  }
+	public FeedDto(int seq, String id, String content, String tag, String location, String filename,
+			String realpathfile, Date date_created, Date date_updated) {
+		super();
+		this.seq = seq;
+		this.id = id;
+		this.content = content;
+		this.tag = tag;
+		this.location = location;
+		this.filename = filename;
+		this.realpathfile = realpathfile;
+		this.date_created = date_created;
+		this.date_updated = date_updated;
+	}
 
-  public void setTag(String tag) {
-    this.tag = tag;
-  }
+	public int getSeq() {
+		return seq;
+	}
 
-  public String getLocation() {
-    return location;
-  }
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
 
-  public void setLocation(String location) {
-    this.location = location;
-  }
+	public List<CommentDto> getComments() {
+		return comments;
+	}
 
-  public String getFilename() {
-    return filename;
-  }
 
-  public void setFilename(String filename) {
-    this.filename = filename;
-  }
+	public int getFavoriteSeq() {
+		return favoriteSeq;
+	}
 
-  public String getRealpathfile() {
-    return realpathfile;
-  }
+	public void setFavoriteSeq(int favoriteSeq) {
+		this.favoriteSeq = favoriteSeq;
+	}
 
-  public void setRealpathfile(String realpathfile) {
-    this.realpathfile = realpathfile;
-  }
+	public void setComments(List<CommentDto> comments) {
+		this.comments = comments;
+	}
 
-  public LocalDateTime getDate_created() {
-    return date_created;
-  }
+	private List<CommentDto> comments = new ArrayList<>();
 
-  public void setDate_created(LocalDateTime date_created) {
-    this.date_created = date_created;
-  }
+	public String getId() {
+		return id;
+	}
 
-  public LocalDateTime getDate_updated() {
-    return date_updated;
-  }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-  public void setDate_updated(LocalDateTime date_updated) {
-    this.date_updated = date_updated;
-  }
+	public String getContent() {
+		return content;
+	}
 
-  public FeedDto(String id, String content, String tag, String location, String filename, String realpathfile, LocalDateTime date_created, LocalDateTime date_updated) {
-    this.id = id;
-    this.content = content;
-    this.tag = tag;
-    this.location = location;
-    this.filename = filename;
-    this.realpathfile = realpathfile;
-    this.date_created = date_created;
-    this.date_updated = date_updated;
-  }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-  public FeedDto() {
-    super();
-  }
+	public String getTag() {
+		return tag;
+	}
 
-  @Override
-  public String toString() {
-    return "BoardDto{" +
-        "id='" + id + '\'' +
-        ", content='" + content + '\'' +
-        ", tag='" + tag + '\'' +
-        ", location='" + location + '\'' +
-        ", filename='" + filename + '\'' +
-        ", realpathfile='" + realpathfile + '\'' +
-        ", date_created=" + date_created +
-        ", date_updated=" + date_updated +
-        '}';
-  }
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public String getRealpathfile() {
+		return realpathfile;
+	}
+
+	public void setRealpathfile(String realpathfile) {
+		this.realpathfile = realpathfile;
+	}
+
+	public Date getDate_created() {
+		return date_created;
+	}
+
+	public void setDate_created(Date date_created) {
+		this.date_created = date_created;
+	}
+
+	public Date getDate_updated() {
+		return date_updated;
+	}
+
+	public void setDate_updated(Date date_updated) {
+		this.date_updated = date_updated;
+	}
+
+	public Integer getFavoriteCount() {
+		return favoriteCount;
+	}
+
+	public void setFavoriteCount(Integer favoriteCount) {
+		this.favoriteCount = favoriteCount;
+	}
+
+	@Override
+	public String toString() {
+		return "FeedDto [seq=" + seq + ", id=" + id + ", content=" + content + ", tag=" + tag + ", location=" + location
+				+ ", filename=" + filename + ", realpathfile=" + realpathfile + ", date_created=" + date_created
+				+ ", date_updated=" + date_updated + ", favoriteSeq=" + favoriteSeq + ", favoriteCount=" + favoriteCount
+				+ ", comments=" + comments + "]";
+	}
+
 }

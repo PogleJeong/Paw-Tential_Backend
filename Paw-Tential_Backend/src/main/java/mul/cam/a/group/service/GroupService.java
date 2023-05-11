@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mul.cam.a.group.dao.GroupDAO;
+import mul.cam.a.group.dto.CareGroupFeedDTO;
 import mul.cam.a.group.dto.GroupDTO;
 import mul.cam.a.group.dto.GroupFeedCommentDTO;
 import mul.cam.a.group.dto.GroupFeedDTO;
 import mul.cam.a.group.dto.GroupFeedLikeDTO;
+import mul.cam.a.group.dto.GroupSearchParam;
 import mul.cam.a.group.dto.MemberGroupDTO;
 
 @Service
@@ -25,10 +27,26 @@ public class GroupService {
 		return dao.hasJoinedGroup(id);
 	}
 	
-	// 특정 그룹의 피드 가져오기
+	// 특정 그룹 멤버수 가져오기
+	public int getGroupMember(String grpName) {
+		return dao.getGroupMember(grpName);
+	}
+	
+	// 특정 그룹에 가입된 상태인지 확인
+	public int isMember(MemberGroupDTO dto) {
+		return dao.isMember(dto);
+	}
+	
+	// 특정 그룹의 피드 가져오기(해당 그룹에 가입 되어 있지 않을 때)
 	public List<GroupFeedDTO> getGroupFeed(int grpNo) {
 		return dao.getGroupFeed(grpNo);
 	}
+	
+	// 특정 그룹의 피드 가져오기
+	public List<GroupFeedDTO> getGroupAllFeed(int grpNo) {
+		return dao.getGroupAllFeed(grpNo);
+	}
+
 	
 	// 특정 회원이 가입한 그룹들의 모든 피드 가져오기
 	public List<GroupFeedDTO> getMemberGroupsFeeds(String id) {
@@ -40,14 +58,19 @@ public class GroupService {
 		return dao.createGroup(dto);
 	}
 	
+	// 그룹 생성 시, 기존에 존재하는 그룹명인지 확인
+	public int checkExistingGroup(String grpName) {
+		return dao.checkExistingGroup(grpName);
+	}
+	
 	// 그룹 생성 시, MEMBER_GROUP 테이블에도 데이터 추가
 	public int addMemberGroup(MemberGroupDTO dto) {
 		return dao.addMemberGroup(dto);
 	}
 	
-	// 그룹 검색
-	public List<GroupDTO> searchGroup(MemberGroupDTO dto) {
-		return dao.searchGroup(dto);
+	// 그룹 리스트 및 검색 리스트
+	public List<GroupDTO> getGroupList(GroupSearchParam param) {
+		return dao.getGroupList(param);
 	}
 	
 	// 그룹 방문수 증가
@@ -155,6 +178,11 @@ public class GroupService {
 		return dao.writeGrpFeedCmt(dto);
 	}
 	
+	// 댓글 수정하기
+	public int cmtModify(GroupFeedCommentDTO dto) {
+		return dao.cmtModify(dto);
+	}
+	
 	// 댓글 삭제하기
 	public int cmtDelete(int grpCmtNo) {
 		return dao.cmtDelete(grpCmtNo);
@@ -163,6 +191,36 @@ public class GroupService {
 	// 댓글 수 카운트
 	public int countComment(int grpFeedNo) {
 		return dao.countComment(grpFeedNo);
+	}
+	
+	// 댓글 내용 가져오기
+	public GroupFeedCommentDTO getCmtContent(int grpCmtNo) {
+		return dao.getCmtContent(grpCmtNo);
+	}
+	
+	// 돌봄 그룹 피드 리스트
+	public List<CareGroupFeedDTO> getCareGroupAllFeed(int grpNo) {
+		return dao.getCareGroupAllFeed(grpNo);
+	}
+	
+	// 돌봄 그룹 특정 피드 정보
+	public CareGroupFeedDTO loadCarePost(int careGrpFeedNo) {
+		return dao.loadCarePost(careGrpFeedNo);
+	}
+	
+	// 돌봄 그룹 피드 작성
+	public int createCareFeed(CareGroupFeedDTO dto) {
+		return dao.createCareFeed(dto);
+	}
+	
+	// 돌봄 그룹 피드 수정
+	public int modifyCareFeed(CareGroupFeedDTO dto) {
+		return dao.modifyCareFeed(dto);
+	}
+	
+	// 돌봄 그룹 피드 삭제
+	public int deleteCareFeed(int careGrpFeedNo) {
+		return dao.deleteCareFeed(careGrpFeedNo);
 	}
 	
 	
