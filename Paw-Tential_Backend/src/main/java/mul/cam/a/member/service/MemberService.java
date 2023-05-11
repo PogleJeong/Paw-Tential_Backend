@@ -322,8 +322,8 @@ public class MemberService {
 				
 				// response 에서 (property, kakao_account) 정보가져오기
 				userInfo.put("nickname", properties.get("nickname"));
-				userInfo.put("email", kakao_account.get("email"));
-				userInfo.put("birth", (String)kakao_account.get("birthyear") + (String)kakao_account.get("birthday"));
+				userInfo.put("email", ""); // email 수집불가. kakao_account.email
+				userInfo.put("birth", ""); // (String)kakao_account.get("birthyear") + (String)kakao_account.get("birthday"));
 				
 				// kakao 정보에서 성별 참고
 				if(kakao_account.get("gender").equals("male")) {
