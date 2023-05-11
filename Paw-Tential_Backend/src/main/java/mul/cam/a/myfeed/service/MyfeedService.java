@@ -56,7 +56,9 @@ public class MyfeedService {
 	}
 	
 	public boolean editMember(MemberDto dto) {
+		
 		int n =  dao.editMember(dto);
+
 		return n>0?true:false;
 	}
 }

@@ -91,7 +91,7 @@ WHERE following_id = #{following_id};
 		<update id="editMember" parameterType="mul.cam.a.member.dto.MemberDto">
 		  UPDATE Member
   		SET
-    pwd = #{pwd},
+  	id = #{id},
     email = #{email},
     nickname = #{nickname},
     phone = #{phone},
