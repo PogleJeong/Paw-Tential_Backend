@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
-import mul.cam.a.feed.dto.FeedDto;
 import mul.cam.a.feed.dto.FeedParam;
-import mul.cam.a.market.dto.MarketDto;
 import mul.cam.a.pawtens.dto.PawtensDto;
+import mul.cam.a.pawtens.dto.PawtensLikeDto;
 import mul.cam.a.pawtens.service.PawtensService;
 import mul.cam.a.util.FileUtil;
 
@@ -33,26 +32,15 @@ public class PawtensController {
 	public Map<String, Object> pawtens(FeedParam param){
 		System.out.println("PawtensController pawtens()" + new Date());
 		
-		// 포텐스의 시작과 끝
-		int pn = param.getPageNumber();	// 0 1 2 3 ...
-		int start = 1 + (pn * 12);		// 1 6 11 16 ...
-		int end = (pn + 1) * 12;		// 5 10 15 20 ...
-		
-		param.setStart(start);
-		param.setEnd(end);
-		
-		List<FeedDto> list = service.pawtensList(param);
-		
-		// 포텐스의 총 개수
-		int len = service.getAllPawtens(param);
+		List<Map<String, Object>> list = service.pawtensList();
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("list", list);  // 포텐스 리스트
-		map.put("cnt", len);	// 포텐스 총 개수
 
 		return map;
 	}
 	
+	// 포텐스 작성
 	@PostMapping(value = "/pawtens/write")
 	public String pawtensWrite(@RequestPart(value="file") MultipartFile thumbnail,
 								PawtensDto dto,
@@ -88,6 +76,22 @@ public class PawtensController {
 			return "포텐스 작성 실패";
 		}
 		return "포텐스 작성 완료";
+	}
+	
+	// 포텐스 좋아요
+	@PostMapping("/pawtens/pawtensLike")
+	public String pawtensLike(PawtensLikeDto dto) {
+		System.out.println("PawtensController pawtensLike()" + new Date());
+		
+		boolean isLiked = service.hasLikedPawtens(dto);
+		
+		if(isLiked == true) {	// 좋아요 한 적이 있으면 취소
+			service.pawtensUnLike(dto);
+			return "좋아요 반영";
+		} else {				// 좋아요 한 적이 없으면 추가
+			service.pawtensLike(dto);
+			return "좋아요 취소";
+		}
 	}
 
 }
