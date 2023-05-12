@@ -22,22 +22,18 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-devtools</artifactId>
-		<scope>runtime</scope>
-		<optional>true</optional>
-	</dependency>
-		
-		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
 		
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
@@ -116,14 +112,42 @@
 		    <artifactId>spring-security-config</artifactId>
 		    <version>3.2.0.RELEASE</version>
 		</dependency>
-    
+		
+		<!-- websocket - java 채팅구현 -->
 		<dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.11.0</version>
-    </dependency>
-	
-    <!--lombok-->
+		    <groupId>javax.websocket</groupId>
+		    <artifactId>javax.websocket-api</artifactId>
+		    <version>1.1</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- web-socket - stomp 설정 -->
+		<dependency>
+		    <groupId>org.webjars</groupId>
+		    <artifactId>stomp-websocket</artifactId>
+		    <version>2.3.3-1</version>
+		</dependency>
+		
+		<!-- websocket - spring boot 채팅구현 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-websocket</artifactId>
+		    <version>3.0.5</version>
+		</dependency>
+
+		<dependency>
+	      <groupId>commons-io</groupId>
+	      <artifactId>commons-io</artifactId>
+	      <version>2.11.0</version>
+	    </dependency>
+		
+  		<!--lombok-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
