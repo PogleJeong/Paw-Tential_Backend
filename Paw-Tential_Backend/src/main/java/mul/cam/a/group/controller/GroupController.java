@@ -43,20 +43,6 @@ public class GroupController {
 		return service.getGroupMember(grpName);
 	}
 	
-	// 로그인 한 유저의 프로필 사진 가져오기
-	@GetMapping("/group/getProfileImage")
-	public String getProfileImage(String id) {
-		return service.getProfileImage(id);
-	}
-	
-	// 특정 그룹에 가입한 사람 프로필 가져오기
-	@GetMapping("/group/getGroupMemberImage")
-	public Map<String, Object> getGroupMemberImage(int groupId) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("profileList", service.getGroupMemberImg(groupId));
-		return map;
-	}
-	
 	// 뉴스피드
 	@GetMapping("/group/newsFeed")
 	public Map<String, Object> newsFeed(String memberId) {
@@ -131,12 +117,6 @@ public class GroupController {
 			return answer > 0 ? "그룹이 생성되었습니다." : "그룹 생성에 실패하였습니다.";
 	}
 	
-	// 공식 그룹 가져오기
-	@GetMapping("/group/getOfficialGroup")
-	public GroupDTO getOfficialGroup(String memberId) {
-		return service.getOfficialGroup(memberId);
-	}
-	
 	// 그룹 리스트 및 검색 결과
 	@GetMapping("/group/getGroupList")
 	public Map<String, Object> getAllGroupList(GroupSearchParam param) {
@@ -173,7 +153,10 @@ public class GroupController {
 	// 특정 그룹의 정보 가져오기
 	@GetMapping("/group/getGroupInfo")
 	public GroupDTO getGroupInfo(int grpNo) {
-		return service.getGroupInfo(grpNo);
+		System.out.println(grpNo);
+		GroupDTO dto = service.getGroupInfo(grpNo);
+		System.out.println(dto.toString());
+		return dto;
 	}
 	
 	// 특정 그룹의 리더
@@ -267,14 +250,6 @@ public class GroupController {
 		return filePath;
 	}
 	
-	// 특정 피드에 좋아요 클릭한 인원
-	@GetMapping("/group/likesMember")
-	public Map<String, Object> likesMember(int grpFeedNo) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("likes", service.likesMember(grpFeedNo));
-		return map;
-	}
-	
 	// 특정 피드 정보 불러오기
 	@GetMapping("/group/loadPost")
 	public Map<String, Object> loadPost(int grpFeedNo) {
@@ -293,13 +268,6 @@ public class GroupController {
 	@GetMapping("/group/feedDelete")
 	public String feedDelete(int grpFeedNo) {
 		return service.feedDelete(grpFeedNo) > 0 ? "피드가 삭제되었습니다." : "피드 삭제 실패";
-	}
-	
-	// 좋아요 이력 확인
-	@GetMapping("/group/likeCheck")
-	public int hasLikedGroupFeed(GroupFeedLikeDTO dto) {
-		System.out.println(service.hasLikedGroupFeed(dto));
-		return service.hasLikedGroupFeed(dto) != 0 ? 1 : 0;
 	}
 	
 	// 특정 피드 좋아요 처리

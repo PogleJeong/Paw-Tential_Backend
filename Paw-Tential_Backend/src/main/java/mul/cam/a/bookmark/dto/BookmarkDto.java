@@ -1,50 +1,64 @@
 package mul.cam.a.bookmark.dto;
 
-import java.io.Serializable;
+public class BookmarkDto {
+  private int seq;
+  private int feed_seq;
+  private String feed_id;
+  private String id;
 
-public class BookmarkDto implements Serializable {
 
-	private int seq, feedSeq;
-	private String id;
+  public BookmarkDto() {
+    super();
+  }
 
-	public BookmarkDto() {
-		// TODO Auto-generated constructor stub
-	}
+  @Override
+  public String toString() {
+    return "BookmarkDto{" +
+        "seq=" + seq +
+        ", feed_seq=" + feed_seq +
+        ", feed_id='" + feed_id + '\'' +
+        ", id='" + id + '\'' +
+        '}';
+  }
 
-	public BookmarkDto(int seq, int feedSeq, String id) {
-		super();
-		this.seq = seq;
-		this.feedSeq = feedSeq;
-		this.id = id;
-	}
+  public BookmarkDto(int seq, int feed_seq, String feed_id, String id) {
+    this.seq = seq;
+    this.feed_seq = feed_seq;
+    this.feed_id = feed_id;
+    this.id = id;
+  }
 
-	public int getSeq() {
-		return seq;
-	}
 
-	public void setSeq(int seq) {
-		this.seq = seq;
-	}
+  public int getSeq() {
+    return seq;
+  }
 
-	public int getFeedSeq() {
-		return feedSeq;
-	}
+  public void setSeq(int seq) {
+    this.seq = seq;
+  }
 
-	public void setFeedSeq(int feedSeq) {
-		this.feedSeq = feedSeq;
-	}
+  public int getFeed_seq() {
+    return feed_seq;
+  }
 
-	public String getId() {
-		return id;
-	}
+  public void setFeed_seq(int feed_seq) {
+    this.feed_seq = feed_seq;
+  }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+  public String getFeed_id() {
+    return feed_id;
+  }
 
-	@Override
-	public String toString() {
-		return "BookmarkDto [seq=" + seq + ", feedSeq=" + feedSeq + ", id=" + id + "]";
-	}
-	
+  public void setFeed_id(String feed_id) {
+    this.feed_id = feed_id;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 }
+

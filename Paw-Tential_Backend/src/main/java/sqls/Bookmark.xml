@@ -2,27 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mul.cam.a.bookmark.dao.BookMarkDAO">
-	
-	<!-- 기존에 북마크 한 적 있는지 조사 -->
-	<select id="hasBookMark" parameterType="mul.cam.a.bookmark.dto.BookmarkDto" resultType="Integer">
-		SELECT COUNT(*)
-		FROM BOOKMARK
-		WHERE FEED_SEQ = ${feedSeq} AND ID = #{id}
-	</select>
-	
-	<!-- 북마크 반영 -->
-	<insert id="bookMark" parameterType="mul.cam.a.bookmark.dto.BookmarkDto">
-		INSERT INTO BOOKMARK(FEED_SEQ, ID)
-		VALUES(${feedSeq}, #{id})
-	</insert>
-	
-	<!-- 북마크 취소 -->
-	<delete id="unBookMark" parameterType="mul.cam.a.bookmark.dto.BookmarkDto">
-		DELETE 
-		FROM BOOKMARK
-		WHERE FEED_SEQ = ${feedSeq} AND ID = #{id}
-	</delete>
-	
+<mapper namespace="Bookmark">
+<!-- Bookmark불러오기 -->
+
+  <select id="getAllBookmark" resultType="mul.cam.a.bookmark.dto.BookmarkDto">
+    select *
+    from bookmark
+  </select>
+
+<!--Bookmark저장-->
+  <insert id="addBookmark" parameterType="mul.cam.a.bookmark.dto.BookmarkDto">
+    insert into bookmark(feed_seq,id)
+    values (#{feed_seq},#{id})
+  </insert>
+
 
 </mapper>

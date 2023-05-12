@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class GroupFeedCommentDTO implements Serializable {
 	
 	private int grpFeedNo, grpCmtNo, grpFeedCmtRef, grpFeedCmtDepth, grpFeedCmtStep;
-	private String grpFeedCmtId, grpFeedCmtContent, profile;
+	private String grpFeedCmtId, grpFeedCmtContent;
 	@DateTimeFormat(pattern = "yy-MM-dd hh:mm")
 	private Date grpFeedCmtWd;
 	
@@ -17,7 +17,7 @@ public class GroupFeedCommentDTO implements Serializable {
 	}
 
 	public GroupFeedCommentDTO(int grpFeedNo, int grpCmtNo, int grpFeedCmtRef, int grpFeedCmtDepth, int grpFeedCmtStep,
-			String grpFeedCmtId, String grpFeedCmtContent, String profile, Date grpFeedCmtWd) {
+			String grpFeedCmtId, String grpFeedCmtContent, Date grpFeedCmtWd) {
 		super();
 		this.grpFeedNo = grpFeedNo;
 		this.grpCmtNo = grpCmtNo;
@@ -26,7 +26,6 @@ public class GroupFeedCommentDTO implements Serializable {
 		this.grpFeedCmtStep = grpFeedCmtStep;
 		this.grpFeedCmtId = grpFeedCmtId;
 		this.grpFeedCmtContent = grpFeedCmtContent;
-		this.profile = profile;
 		this.grpFeedCmtWd = grpFeedCmtWd;
 	}
 
@@ -86,14 +85,6 @@ public class GroupFeedCommentDTO implements Serializable {
 		this.grpFeedCmtContent = grpFeedCmtContent;
 	}
 
-	public String getProfile() {
-		return profile;
-	}
-
-	public void setProfile(String profile) {
-		this.profile = profile;
-	}
-
 	public Date getGrpFeedCmtWd() {
 		return grpFeedCmtWd;
 	}
@@ -106,8 +97,9 @@ public class GroupFeedCommentDTO implements Serializable {
 	public String toString() {
 		return "GroupFeedCommentDTO [grpFeedNo=" + grpFeedNo + ", grpCmtNo=" + grpCmtNo + ", grpFeedCmtRef="
 				+ grpFeedCmtRef + ", grpFeedCmtDepth=" + grpFeedCmtDepth + ", grpFeedCmtStep=" + grpFeedCmtStep
-				+ ", grpFeedCmtId=" + grpFeedCmtId + ", grpFeedCmtContent=" + grpFeedCmtContent + ", profile=" + profile
-				+ ", grpFeedCmtWd=" + grpFeedCmtWd + "]";
+				+ ", grpFeedCmtId=" + grpFeedCmtId + ", grpFeedCmtContent=" + grpFeedCmtContent + ", grpFeedCmtWd="
+				+ grpFeedCmtWd + "]";
 	}
+	
 	
 }

@@ -100,5 +100,6 @@
 		delete from email_auth
 		where id=#{id} and email=#{email} and authKey=#{authKey}
 	</delete>
+	
 
 </mapper>

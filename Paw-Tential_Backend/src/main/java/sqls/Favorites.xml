@@ -2,26 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mul.cam.a.favorites.dao.FavoritesDAO">
+<mapper namespace="Favorites">
+<!-- Favorites불러오기 -->
+  <select id="getAllFavorites" resultType="mul.cam.a.favorites.dto.FavoritesDto">
+    select *
+    from favorites
+  </select>
 
-	<!--  좋아요 클릭한 적 있는지 조사 -->
-	<select id="hasLiked" parameterType="mul.cam.a.favorites.dto.FavoritesDto" resultType="Integer">
-	SELECT COUNT(*)
-	FROM FAVORITES
-	WHERE FEED_SEQ = ${feedSeq} AND ID = #{id}
-	</select>
+  <!-- Favorites저장 -->
 
-	<!-- 좋아요 처리 -->
-	<insert id="like" parameterType="mul.cam.a.favorites.dto.FavoritesDto">
-	INSERT INTO FAVORITES(FEED_SEQ, ID)
-	VALUES(${feedSeq}, #{id})
-	</insert>
-	
-	<!-- 좋아요 취소 처리 -->
-	<delete id="unLike" parameterType="mul.cam.a.favorites.dto.FavoritesDto">
-	DELETE
-	FROM FAVORITES
-	WHERE FEED_SEQ = ${feedSeq} AND ID = #{id}
-	</delete>
+  <insert id="addFavorites" parameterType="mul.cam.a.favorites.dto.FavoritesDto" useGeneratedKeys="true" keyProperty="seq">
+    insert into  favorites(feed_seq, id ,feed_like)
+    VALUES (#{feed_seq},#{id}, #{feed_like})
+  </insert>
+
+  <!-- Favorites -->
+
+
+	<!-- Favorites취소 -->
+  <delete id="deleteFavorites" parameterType="mul.cam.a.favorites.dto.FavoritesDto">
+    delete
+    from Favorites
+    where seq = #{seq}
+  </delete>
+
+
 
 </mapper>

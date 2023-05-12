@@ -12,7 +12,6 @@ import mul.cam.a.group.dto.GroupFeedDTO;
 import mul.cam.a.group.dto.GroupFeedLikeDTO;
 import mul.cam.a.group.dto.GroupSearchParam;
 import mul.cam.a.group.dto.MemberGroupDTO;
-import mul.cam.a.member.dto.MemberDto;
 
 @Mapper
 @Repository
@@ -23,12 +22,6 @@ public interface GroupDAO {
 	
 	// 특정 그룹 멤버수 가져오기
 	int getGroupMember(String grpName);
-	
-	// 로그인 한 유저의 프로필 이미지 가져오기
-	String getProfileImage(String id);
-	
-	// 특정 그룹에 가입한 사람 프로필 가져오기
-	List<MemberDto> getGroupMemberImg(int groupId); 
 	
 	// 특정 그룹에 가입된 상태인지 확인
 	int isMember(MemberGroupDTO dto);
@@ -48,9 +41,6 @@ public interface GroupDAO {
 	int checkExistingGroup(String grpName);
 	// 그룹 생성 시, MEMBER_GROUP 테이블에도 데이터 추가
 	int addMemberGroup(MemberGroupDTO dto);
-	
-	// 공식 그룹 가져오기
-	GroupDTO getOfficialGroup(String memberId);
 	
 	// 그룹 리스트 및 검색 리스트
 	List<GroupDTO> getGroupList(GroupSearchParam param);
@@ -97,9 +87,6 @@ public interface GroupDAO {
 	
 	// 피드 삭제하기
 	int feedDelete(int grpFeedNo);
-	
-	// 특정 피드에 좋아요 클릭한 인원
-	List<GroupFeedLikeDTO> likesMember(int grpFeedNo);
 	
 	// 특정 피드 정보 불러오기
 	GroupFeedDTO loadPost(int grpFeedNo);

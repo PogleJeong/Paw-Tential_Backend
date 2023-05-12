@@ -7,8 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class GroupFeedDTO implements Serializable {
 
-	private int grpNo, grpFeedNo, grpFeedLikeCount, grpCommentCount;
-	private String grpName, grpFeedContent, grpFeedSetting, grpFeedId, profile;
+	private int grpNo, grpFeedNo, grpFeedLikeCount;
+	private String grpName, grpFeedContent, grpFeedSetting, grpFeedId;
 	@DateTimeFormat(pattern = "yy-MM-dd hh:mm")
 	private Date grpFeedWd;
 	
@@ -16,18 +16,16 @@ public class GroupFeedDTO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public GroupFeedDTO(int grpNo, int grpFeedNo, int grpFeedLikeCount, int grpCommentCount, String grpName,
-			String grpFeedContent, String grpFeedSetting, String grpFeedId, String profile, Date grpFeedWd) {
+	public GroupFeedDTO(int grpNo, int grpFeedNo, int grpFeedLikeCount, String grpName, String grpFeedContent,
+			String grpFeedSetting, String grpFeedId, Date grpFeedWd) {
 		super();
 		this.grpNo = grpNo;
 		this.grpFeedNo = grpFeedNo;
 		this.grpFeedLikeCount = grpFeedLikeCount;
-		this.grpCommentCount = grpCommentCount;
 		this.grpName = grpName;
 		this.grpFeedContent = grpFeedContent;
 		this.grpFeedSetting = grpFeedSetting;
 		this.grpFeedId = grpFeedId;
-		this.profile = profile;
 		this.grpFeedWd = grpFeedWd;
 	}
 
@@ -53,14 +51,6 @@ public class GroupFeedDTO implements Serializable {
 
 	public void setGrpFeedLikeCount(int grpFeedLikeCount) {
 		this.grpFeedLikeCount = grpFeedLikeCount;
-	}
-
-	public int getGrpCommentCount() {
-		return grpCommentCount;
-	}
-
-	public void setGrpCommentCount(int grpCommentCount) {
-		this.grpCommentCount = grpCommentCount;
 	}
 
 	public String getGrpName() {
@@ -95,14 +85,6 @@ public class GroupFeedDTO implements Serializable {
 		this.grpFeedId = grpFeedId;
 	}
 
-	public String getProfile() {
-		return profile;
-	}
-
-	public void setProfile(String profile) {
-		this.profile = profile;
-	}
-
 	public Date getGrpFeedWd() {
 		return grpFeedWd;
 	}
@@ -114,9 +96,12 @@ public class GroupFeedDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "GroupFeedDTO [grpNo=" + grpNo + ", grpFeedNo=" + grpFeedNo + ", grpFeedLikeCount=" + grpFeedLikeCount
-				+ ", grpCommentCount=" + grpCommentCount + ", grpName=" + grpName + ", grpFeedContent=" + grpFeedContent
-				+ ", grpFeedSetting=" + grpFeedSetting + ", grpFeedId=" + grpFeedId + ", profile=" + profile
-				+ ", grpFeedWd=" + grpFeedWd + "]";
+				+ ", grpName=" + grpName + ", grpFeedContent=" + grpFeedContent + ", grpFeedSetting=" + grpFeedSetting
+				+ ", grpFeedId=" + grpFeedId + ", grpFeedWd=" + grpFeedWd + "]";
 	}
+	
+	
+	
+	
 	
 }

@@ -3,18 +3,17 @@ package mul.cam.a.group.dto;
 import java.io.Serializable;
 
 public class MemberGroupDTO implements Serializable {
-	private String memberId, groupName, profile;
+	private String memberId, groupName;
 	private int groupId, status;
 	
 	public MemberGroupDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public MemberGroupDTO(String memberId, String groupName, String profile, int groupId, int status) {
+	public MemberGroupDTO(String memberId, String groupName, int groupId, int status) {
 		super();
 		this.memberId = memberId;
 		this.groupName = groupName;
-		this.profile = profile;
 		this.groupId = groupId;
 		this.status = status;
 	}
@@ -35,14 +34,6 @@ public class MemberGroupDTO implements Serializable {
 		this.groupName = groupName;
 	}
 
-	public String getProfile() {
-		return profile;
-	}
-
-	public void setProfile(String profile) {
-		this.profile = profile;
-	}
-
 	public int getGroupId() {
 		return groupId;
 	}
@@ -61,8 +52,10 @@ public class MemberGroupDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "MemberGroupDTO [memberId=" + memberId + ", groupName=" + groupName + ", profile=" + profile
-				+ ", groupId=" + groupId + ", status=" + status + "]";
+		return "MemberGroupDTO [memberId=" + memberId + ", groupName=" + groupName + ", groupId=" + groupId
+				+ ", status=" + status + "]";
 	}
+	
+	
 	
 }

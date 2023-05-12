@@ -22,7 +22,7 @@ public class AdminController {
 	@Autowired
 	AdminService service;
 	
-	// 관리자 정보
+	// 유저 정보
 	@GetMapping(value = "userInfo")
 	public MemberDto userInfo(String id) {
 		System.out.println("AdminController userInfo " + new Date());
