@@ -107,6 +107,7 @@ WHERE following_id = #{following_id};
   WHERE id = #{id}
 		</update>
 		
+	<!-- 	커밋용 주석 -->
 		
 
 </mapper>
