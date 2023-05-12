@@ -40,6 +40,12 @@ where id=#{id}
  	 VALUES (#{follower_id}, #{following_id})
 	</insert>
 	
+		 <!-- 특정 유저를 언팔로우하는 경우 -->
+	<delete id="unfollow" parameterType="mul.cam.a.myfeed.dto.FollowDto">
+  	DELETE FROM Follow
+	WHERE follower_id = #{follower_id} AND following_id = #{following_id};
+	</delete>
+	
 	
 	<!-- 특정 유저의 팔로워 리스트 조회  -->
 	<select id="followerList" parameterType="String" resultType="String">
@@ -92,6 +98,7 @@ WHERE following_id = #{following_id};
 		  UPDATE Member
   		SET
   	id = #{id},
+  	pwd = #{pwd},
     email = #{email},
     nickname = #{nickname},
     phone = #{phone},
@@ -99,5 +106,7 @@ WHERE following_id = #{following_id};
     intro = #{intro}
   WHERE id = #{id}
 		</update>
+		
+		
 
 </mapper>

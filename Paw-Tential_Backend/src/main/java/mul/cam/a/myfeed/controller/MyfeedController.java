@@ -64,6 +64,19 @@ public class MyfeedController {
 
 	}
 	
+	@PostMapping(value = "unfollow")
+	public String unfollow (FollowDto dto) {
+		System.out.println("언팔로우 " + new Date());
+		boolean b = service.unfollow(dto);
+		
+		if(b == false) {
+			return "NO";
+			
+		} 
+		return "YES";
+
+	}
+	
 	
 	@GetMapping(value = "followerList")
 	public List<String> followerList(String id){

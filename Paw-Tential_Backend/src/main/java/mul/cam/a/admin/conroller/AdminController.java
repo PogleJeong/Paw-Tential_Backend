@@ -26,7 +26,7 @@ public class AdminController {
 	@GetMapping(value = "userInfo")
 	public MemberDto userInfo(String id) {
 		System.out.println("AdminController userInfo " + new Date());
-		
+		System.out.println(service.userInfo(id));
 		return service.userInfo(id);
 		
 
