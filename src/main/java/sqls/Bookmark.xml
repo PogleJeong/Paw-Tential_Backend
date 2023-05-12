@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Bookmark">
+<!-- Bookmark불러오기 -->
+
+  <select id="getAllBookmark" resultType="mul.cam.a.bookmark.dto.BookmarkDto">
+    select *
+    from bookmark
+  </select>
+
+<!--Bookmark저장-->
+  <insert id="addBookmark" parameterType="mul.cam.a.bookmark.dto.BookmarkDto">
+    insert into bookmark(feed_seq,id)
+    values (#{feed_seq},#{id})
+  </insert>
+
+
+</mapper>

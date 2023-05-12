@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.feed.dao.FeedDao">
+	<!-- main feed불러오기 -->
+	<select id="getAllFeed" resultType="map">
+		select a.*, b.profile
+		from feed as a
+		left join member as b
+		on a.id = b.id
+		order by a.seq desc;
+	</select>
+	
+	<!-- 좋아요 갯수 -->
+	<select id="getAllFeedByUserId" parameterType="String" resultType="mul.cam.a.feed.dto.FeedDto">
+	  select *, (select seq from favorites where feed_seq = feed.seq and id = #{userId}) as favoriteSeq
+	          , (select count(seq) from favorites where feed_seq = feed.seq) as favoriteCount
+	  from feed
+	</select>
+
+	<!--로그인후, 팔로우한 피드까지 불러오기 -->
+	<select id="getFollowToUsersFeed" parameterType="String" resultType="mul.cam.a.feed.dto.FeedDto">
+	  SELECT *
+	  FROM feed
+	  WHERE id IN (
+	    SELECT follow.id
+	    FROM follow
+	    WHERE follow.toUser IN (#{toUser}, #{fromUser})
+	       OR follow.fromUser IN (#{fromUser}, #{toUser})
+	  )
+	</select>
+  
+  	<!-- 피드 작성하기 -->
+  	<insert id="feedWrite" parameterType="mul.cam.a.feed.dto.FeedDto">
+		insert into feed(id, content, tag, location, filename, date_created, date_updated, realpathfile)
+		values(#{id}, #{content}, "", "", "", now(), now(), "")
+	</insert>
+	
+	<!-- 특정 피드 정보 불러오기 -->
+	<select id="getFeedInfo" parameterType="Integer" resultType="mul.cam.a.feed.dto.FeedDto">
+		SELECT *
+		FROM feed
+		WHERE seq = #{seq}
+	</select>
+	
+	<!-- 피드 수정하기 -->
+	<update id="feedUpdate" parameterType="mul.cam.a.feed.dto.FeedDto">
+		UPDATE feed
+		SET content = #{content}, date_updated = now()
+		WHERE seq = #{seq}
+	</update>
+
+	<!-- 피드 삭제하기 -->
+	<delete id="feedDelete" parameterType="Integer">
+		DELETE
+		FROM feed
+		WHERE seq = #{seq}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.admin.dao.AdminDao">
+
+<select id="userInfo" parameterType="String" resultType="mul.cam.a.member.dto.MemberDto">
+SELECT *
+FROM Member
+where id=#{id}
+</select>
+
+<select id="userList" parameterType="mul.cam.a.admin.dto.PageParam"
+	resultType="mul.cam.a.member.dto.MemberDto">
+	SELECT id, pwd, email, nickname, phone, birth, gender, profile, intro, petHave, status, regiDate, groupId, groupStatus, auth
+	FROM
+	(SELECT row_number()over(order by regiDate desc) as rnum,
+	id, pwd, email, nickname, phone, birth, gender, profile, intro, petHave, status, regiDate, groupId, groupStatus, auth
+	FROM Member
+	WHERE 1=1
+	<if
+		test="choice != null and choice != '' and search != null and search != '' ">
+		<if test="choice == 'id'">
+			and id like CONCAT('%', #{search}, '%')
+		</if>
+		<if test="choice == 'auth'">
+			and auth=#{search}
+		</if>
+	</if>
+	order by regiDate desc) a
+	where rnum between ${start} and ${end}
+</select>
+
+<!-- 회원의 총 수 -->
+<select id="getAllUser" parameterType="mul.cam.a.admin.dto.PageParam" resultType="Integer">
+	SELECT IFNULL(COUNT(*), 0)
+	FROM Member
+	<if test="choice != null and choice != '' and search != null and search != '' ">
+	 	<if test="choice == 'id'">
+	 		WHERE id LIKE concat('%', #{search}, '%') 
+	 	</if>
+
+	 	<if test="choice == 'auth'">
+	 		WHERE auth=#{search}
+	 	</if>
+	 </if>
+</select>
+
+<delete id="userDel" parameterType="String">
+DELETE 
+FROM Member
+WHERE ID=#{id}
+</delete>
+
+
+	<select id="reportList" parameterType="mul.cam.a.admin.dto.PageParam"
+	resultType="mul.cam.a.admin.dto.ReportDto">
+	select reporter, reported, content,
+	rtype, rdate,feedSeq
+	from
+			(select row_number()over(order by rdate desc) as rnum,
+			 reporter, reported, content, rtype, rdate, feedSeq
+	from report
+	where 1=1 
+		 <if test="choice != null and choice != '' and search != null and search != '' ">
+		 	<if test="choice == 'reporter'">
+		 		and reporter like concat('%', #{search}, '%')
+		 	</if>
+		 	<if test="choice == 'reported'">
+		 		and reported like concat('%', #{search}, '%') 
+		 	</if>
+		 	<if test="choice == 'rtype'">
+		 		and rtype like concat('%', #{search}, '%')
+		 	</if>
+		 </if>		 
+		 order by rdate desc ) a
+	where rnum between ${start} and ${end}
+	</select>
+	
+	<!-- 신고 총 수 -->
+<select id="getAllReport" parameterType="mul.cam.a.admin.dto.PageParam" resultType="Integer">
+	SELECT IFNULL(COUNT(*), 0)
+	FROM report
+	<if test="choice != null and choice != '' and search != null and search != '' ">
+	 	 <if test="choice == 'reporter'">
+	 		WHERE reporter LIKE concat('%', #{search}, '%') 
+	 	</if>
+	 	<if test="choice == 'reported'">
+	 		WHERE reported LIKE concat('%', #{search}, '%') 
+	 	</if>
+
+	 	<if test="choice == 'rtype'">
+	 		WHERE rtype LIKE concat('%', #{search}, '%') 
+	 	</if>
+	 </if>
+</select>
+
+<!-- 문의 목록 -->
+
+	<select id="QnAList" parameterType="mul.cam.a.admin.dto.PageParam"
+	resultType="mul.cam.a.admin.dto.QnADto">
+	select seq,content, id, whether, email, wdate
+	from
+			(select row_number()over(order by wdate desc) as rnum,
+			 seq,content, id, whether, email, wdate
+	from QnA
+	where 1=1 
+		 <if test="choice != null and choice != '' and search != null and search != '' ">
+		 	<if test="choice == 'id'">
+		 		and id like concat('%', #{search}, '%')
+		 	</if>
+		 	<if test="choice == 'whether'">
+		 		and whether like concat('%', #{search}, '%') 
+		 	</if>
+		 	<if test="choice == 'content'">
+		 		and content like concat('%', #{search}, '%')
+		 	</if>
+		 </if>		 
+		 order by wdate desc ) a
+	where rnum between ${start} and ${end}
+	</select>
+	
+		<!-- 문의 총 수 -->
+<select id="getAllQnA" parameterType="mul.cam.a.admin.dto.PageParam" resultType="Integer">
+	SELECT IFNULL(COUNT(*), 0)
+	FROM QnA
+	<if test="choice != null and choice != '' and search != null and search != '' ">
+	 	 <if test="choice == 'id'">
+	 		WHERE id LIKE concat('%', #{search}, '%') 
+	 	</if>
+	 	<if test="choice == 'whether'">
+	 		WHERE whether LIKE concat('%', #{search}, '%') 
+	 	</if>
+
+	 	<if test="choice == 'content'">
+	 		WHERE content LIKE concat('%', #{search}, '%') 
+	 	</if>
+	 </if>
+</select>
+
+<update id="answer" parameterType="Integer">
+
+UPDATE QnA 
+SET whether = 1
+WHERE seq = #{seq}
+
+</update>
+
+
+	
+	
+
+</mapper>
