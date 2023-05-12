@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.search.dao.SearchDao">
+
+	<!-- 피드 검색 목록 -->
+	<select id="searchList" parameterType="mul.cam.a.feed.dto.FeedParam" resultType="mul.cam.a.feed.dto.FeedDto">
+		select seq, id, content, tag, location, filename, date_created, date_updated, realpathfile
+		from 
+			( select row_number()over(order by seq desc) as rnum,
+			    seq, id, content, tag, location, filename, date_created, date_updated, realpathfile
+				from feed 
+				where 1=1 
+				<if test="search != null and search != ''">
+					and content like concat('%&lt;p&gt;%', #{search}, '%&lt;/p&gt;%')
+				</if>
+				order by seq desc
+			) a
+			where rnum between #{start} and #{end}
+	</select>
+	
+	<!-- 피드 검색 결과 총 개수 -->
+	<select id="getAllResult" parameterType="mul.cam.a.feed.dto.FeedParam" resultType="Integer">
+		select ifnull(count(*), 0)
+		from feed
+		<if test="search != null and search != ''">
+			where content like concat('%&lt;p&gt;%', #{search}, '%&lt;/p&gt;%')
+		</if>
+	</select>
+	
+	<!-- 사용자 검색 목록 -->
+	<select id="searchUserList" parameterType="mul.cam.a.feed.dto.FeedParam" resultType="mul.cam.a.member.dto.MemberDto">
+		select *
+		from 
+			( select row_number()over(order by regiDate desc) as rnum, id, nickname, profile, regiDate
+				from member 
+				where 1=1 
+				<if test="search != null and search != ''">
+					and nickname like concat('%', #{search}, '%')
+				</if>
+				order by regiDate desc
+			) a
+			where rnum between #{start} and #{end}
+	</select>
+	
+	<!-- 사용자 검색 결과 총 개수 -->
+	<select id="getAllUser" parameterType="mul.cam.a.feed.dto.FeedParam" resultType="Integer">
+		select ifnull(count(*), 0)
+		from member
+		<if test="search != null and search != ''">
+			where nickname like concat('%', #{search}, '%')
+		</if>
+	</select>
+
+</mapper>

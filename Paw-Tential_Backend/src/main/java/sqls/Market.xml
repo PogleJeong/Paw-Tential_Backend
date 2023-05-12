@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.market.dao.MarketDao">
+
+	<select id="searchMarket" resultType="mul.cam.a.market.dto.MarketDto" parameterType="hashmap">
+		select *
+		from market
+		<if test='selectedOption.equals("전체")'>
+		where 1=1
+		</if>
+		<if test='selectedOption.equals("제목")'>
+		where title like concat('%',#{searchWord},'%')
+		</if>
+		<if test='selectedOption.equals("내용")'>
+		where content like concat('%',#{searchWord},'%')
+		</if>
+		<if test='selectedOption.equals("카테고리")'>
+		where category like concat('%',#{searchWord},'%')
+		</if>
+		<if test='selectedOption.equals("제품상태")'>
+		where conditions like concat('%',#{searchWord},'%')
+		</if>
+		order by wdate
+		limit 20 offset #{pages}
+	</select>
+	
+	
+	<select id="printAllMarketList" parameterType="Integer" resultType="mul.cam.a.market.dto.MarketDto">
+		select *
+		from market
+		where del=0 
+		order by wdate
+		limit 20 offset #{pages}
+		<!-- 삭제되지 않은 게시물 del=0-->
+		<!-- offset #{PAGE} 에서 limits 개수만큼 행출력 -->
+		
+	</select>
+	
+	<insert id="writeMarket" parameterType="mul.cam.a.market.dto.MarketDto">
+		insert into market(title, content, wdate, state, id, productName, conditions, category, productNumber, file, price, del, report, geoLat, geoLng)
+		values(#{title}, #{content}, now(), #{state}, #{id}, #{productName}, #{conditions}, #{category}, #{productNumber}, #{file}, price, 0, 0, #{geoLat}, #{geoLng})
+	</insert>
+	
+	<update id="updateMarket" parameterType="mul.cam.a.market.dto.MarketDto">
+		update market
+		set title=#{title}, content=#{content}, state=#{state}, productName=#{productName}, conditions=#{conditions}, file=#{file}, category=#{category}, productNumber=#{productNumber}, geoLat=#{geoLat}, geoLng=#{geoLng}
+		where posting=#{posting}
+	</update>
+	
+	<select id="viewCheck" parameterType="hashmap" resultType="Integer">
+		select count(*)
+		from market_view
+		where id=#{id} and posting=#{posting}
+	</select>
+	
+	<insert id="viewInsert" parameterType="hashmap">
+		insert into market_view(id, posting)
+		value(#{id}, #{posting})
+	</insert>
+	
+	<select id="viewPrint" parameterType="Integer" resultType="Integer">
+		select count(*)
+		from market_view
+		where posting=#{posting}
+	</select>
+	
+	<update id="deleteMarket" parameterType="hashmap">
+		update market
+		set del=1
+		where id=#{id} and posting=#{posting}
+	</update>
+	
+	<select id="marketNumberOfLike" parameterType="Integer" resultType="Integer">
+		select count(*)
+		from market_like
+		where posting=#{posting}
+	</select>
+	
+	<select id="marketClickHistoryOfLike" parameterType="hashmap" resultType="Integer">
+		select count(*)
+		from market_like
+		where posting=#{posting} and id=#{id}
+	</select>
+	
+	<insert id="marketAddLike" parameterType="hashmap" >
+		insert into market_like(posting, id)
+		values(#{posting}, #{id})
+	</insert>
+	
+	<delete id="marketRemoveLike" parameterType="hashmap">
+		delete from market_like
+		where posting=#{posting} and id=#{id}
+	</delete>
+	
+	<insert id="reportMarket" parameterType="mul.cam.a.market.dto.MarketReportDto">
+		insert into market_report(reporter, reported, content, category, date, url)
+		values(#{reporter}, #{reported}, #{content}, #{category}, now(), #{url})
+	</insert>
+</mapper>

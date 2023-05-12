@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.chat.dao.ChatroomDao">
+	<select id="getChatroomID" parameterType="hashmap" resultType="String">
+		select chatroomID
+		from Chatroom
+		where (participant1=#{sender} or participant2=#{recipient})
+		and (participant1=#{recipient} or participant2#{sender})
+	</select>
+	<insert id="createChatroom" parameterType="hashmap">
+		insert into Chatroom(chatroomID, participant1, participant)
+		values(#{chat_id}, #{sender}, #{recipient})
+	</insert>
+	
+	<select id="getChatroomList" parameterType="String" resultType="mul.cam.a.chat.dto.ChatroomDto">
+		select chatroomID, participant1, participant2
+		from Chatroom
+		where participant1=#{USER_ID} or participant2=#{USER_ID}
+	</select>
+</mapper>

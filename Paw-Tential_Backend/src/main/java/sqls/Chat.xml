@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mul.cam.a.chat.dao.ChatDao">
+	<insert id="saveChat" parameterType="mul.cam.a.chat.dto.ChatDto">
+		insert into chat(chatroomID, sender, recipient, message, sendDate, isViewed)
+		values(#{chatroomID}, #{sender}, #{recipient}, #{message}, now(), 0)
+	</insert>
+	
+	<update id="viewChat" parameterType="mul.cam.a.chat.dto.ChatDto">
+		update chat
+		set isViewed=1
+		where chatroomID=#{chatroomID} and recipient=#{recipient} and isViewed=0
+	</update>
+	
+	<select id="getPrevChat" parameterType="String" resultType="hashmap">
+		select chatroomID, sender, recipient, message, sendDate, isViewed
+		from chat
+		where chatroomID=#{chatroomID}
+		limit 20
+	</select>
+	
+	<select id="getNotReadChatCount" parameterType="HashMap" resultType="Integer">
+		select count(*)
+		from chat
+		where chatroomID=#{chatroomID} and recipient=#{recipient} and isViewed=0
+	</select>
+</mapper>
